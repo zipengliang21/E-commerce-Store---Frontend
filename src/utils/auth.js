@@ -5,11 +5,13 @@ import Cookies from "js-cookie";
 
 export const login = async (email, password) => {
     try {
-        const {data, status} = await axios.post('user/token', {
+        console.log(email)
+        console.log(password)
+        const {data, status} = await axios.post('user/token/', {
             email,
             password
         })
-
+console.log(data)
         if (status === 200) {
             setAuthUser(data.access, data.refresh);
 
@@ -26,7 +28,7 @@ export const login = async (email, password) => {
 
 export const register = async (full_name, email, phone, password, password2) => {
     try {
-        const {data, status} = await axios.post('user/register', {
+        const {data, status} = await axios.post('user/register/', {
             full_name,
             email,
             phone,
@@ -88,15 +90,15 @@ export const setAuthUser = (accessToken, refreshToken) => {
     const user = jwt_decode(accessToken) ?? null;
 
     if (user) {
-        useAuthStore.getState.setUser(user);
+        useAuthStore.getState().setUser(user);
     }
 
-    useAuthStore.getState.setLoading(false);
+    useAuthStore.getState().setLoading(false);
 }
 
 export const getRefreshToken = async () => {
     const refreshToken = Cookies.get('refresh_token');
-    const {response} = await axios.post('user/token/refresh', {
+    const {response} = await axios.post('user/token/refresh/', {
         refresh: refreshToken
     });
 

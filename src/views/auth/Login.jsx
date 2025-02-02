@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/auth'
 
 function Login() {
-    const [userName, setUserName] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -14,20 +14,53 @@ function Login() {
         if (isLoggedIn) {
             navigate('/')
         }
-    })
+    }, [])
 
     const resetForm = () => {
-        setUserName("")
+        setEmail("")
         setPassword("")
     }
 
     const handleLogin = async (e) => {
-        e.preventDafault()
+        e.preventDefault()
         setIsLoading(true)
+
+        const {error} = await login(email, password)
+        if (error) {
+            alert(error)
+        } else {
+            navigate('/')
+            resetForm()
+        }
+
+        setIsLoading(false)
     }
 
     return (
-        <div>Login</div>
+        <div>
+            <h2>Login</h2>
+            <p>Login to Continue</p>
+            <form onSubmit={handleLogin}>
+                <input 
+                    type="text" 
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <br />
+                <br />
+                <input 
+                    type="password" 
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">Login</button>
+            </form>
+        </div>
     )
 }
 
