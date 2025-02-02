@@ -11,7 +11,7 @@ export const login = async (email, password) => {
             email,
             password
         })
-console.log(data)
+
         if (status === 200) {
             setAuthUser(data.access, data.refresh);
 
