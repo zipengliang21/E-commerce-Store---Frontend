@@ -11,7 +11,7 @@ function Login() {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn()) {
             navigate('/')
         }
     }, [])

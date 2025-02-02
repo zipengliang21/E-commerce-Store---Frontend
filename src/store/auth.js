@@ -18,7 +18,7 @@ const useAuthStore = create((set, get) => ({
         set({ loading });
     },
     
-    setLoggedIn: () => get().allUserData !== null
+    isLoggedIn: () => get().allUserData !== null
 }));
 
 if(import.meta.env.DEV) {

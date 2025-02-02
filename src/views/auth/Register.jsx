@@ -11,11 +11,11 @@ function Register() {
     const [password2, setPassword2] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
-    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+    const isLoggedIn = useAuthStore((state) => state.isLoggedIn());
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn()) {
             navigate('/');
         }
     }, []);
