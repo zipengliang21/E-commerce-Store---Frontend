@@ -34,19 +34,17 @@ export const register = async (full_name, email, phone, password, password2) => 
             password2
         })
 
-        // if (status === 201) {
-        //     await login(email, password);
-        //     // Alert - Sign Up Successfully
-        // }
-
-        await login(email, password);
-        // Alert - Sign Up Successfully
+        if (status === 201) {
+            await login(email, password);
+            // Alert - Sign Up Successfully
+        }
 
         return { data, error: null}
     } catch(error) {
+        console.log(error);
         return {
             data: null,
-            error: error.response.data?.detail || "something went wrong"
+            error: error.response?.data || "something went wrong"
         }
     }
 }
