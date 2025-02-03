@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function StoreFooter() {
   return (
@@ -171,9 +171,8 @@ function StoreFooter() {
         </div>
         {/* Copyright */}
       </footer>
-
     </div>
-  )
+  );
 }
 
-export default StoreFooter
+export default StoreFooter;
