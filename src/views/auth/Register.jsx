@@ -15,7 +15,7 @@ function Register() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoggedIn()) {
+        if (isLoggedIn) {
             navigate('/');
         }
     }, []);

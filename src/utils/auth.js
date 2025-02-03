@@ -5,8 +5,6 @@ import Cookies from "js-cookie";
 
 export const login = async (email, password) => {
     try {
-        console.log(email)
-        console.log(password)
         const {data, status} = await axios.post('user/token/', {
             email,
             password
@@ -56,8 +54,8 @@ export const register = async (full_name, email, phone, password, password2) => 
 export const logout = () => {
     Cookies.remove('access_token');
     Cookies.remove('refresh_token');
-    useAuthStore.getState.setUser(null);
-
+    useAuthStore.getState().setUser(null);
+    console.log('logged out')
     // Alert - Sign Out Successfully
 }
 
