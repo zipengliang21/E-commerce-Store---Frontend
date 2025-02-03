@@ -55,6 +55,7 @@ function Login() {
                     type="password" 
                     name="password"
                     id="password"
+                    className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
