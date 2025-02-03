@@ -1,15 +1,22 @@
 import { useState } from 'react'
 import apiInstance from '../../utils/axios'
+import { useNavigate } from 'react-router-dom'
 
 function ForgotPassword() {
     const [email, setEmail] = useState('')
+
+    const navigate = useNavigate()
     
     const handleSubmit = (e) => {
-       apiInstance.get(`user/password-reset/${email}/`).then((res) => {
-            console.log(res.data)
-        }).catch((err) => {
-            console.log(err)
-        })
+        try {
+            apiInstance.get(`user/password-reset/${email}/`).then((res) => {
+                console.log(res.data)
+                alert("The Password Reset Email has been sent to your email")
+                navigate("/create-new-password")
+            })
+        } catch (error) {
+            alert("Email Does Not Exist")
+        }
     }
 
     return (
