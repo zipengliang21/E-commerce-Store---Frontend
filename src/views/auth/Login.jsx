@@ -89,7 +89,6 @@ function Login() {
                           <button
                             disabled
                             className="btn btn-primary btn-rounded w-100"
-                            type="submit"
                           >
                             Processing <i className="fas fa-spinner fa-spin" />
                           </button>
