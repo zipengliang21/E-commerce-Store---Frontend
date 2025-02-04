@@ -55,7 +55,7 @@ function Login() {
                       role="tabpanel"
                       aria-labelledby="tab-login"
                     >
-                      <form>
+                      <form onSubmit={handleLogin}>
                         {/* Email input */}
                         <div className="form-outline mb-4">
                           <label className="form-label" htmlFor="Full Name">
@@ -65,8 +65,9 @@ function Login() {
                             type="text"
                             id="username"
                             name="username"
-                            value={"Destiny"}
+                            value={email}
                             className="form-control"
+                            onChange={e => setEmail(e.target.value)}
                           />
                         </div>
 
@@ -78,17 +79,27 @@ function Login() {
                             type="password"
                             id="password"
                             name="password"
-                            value={"****************"}
+                            value={password}
                             className="form-control"
+                            onChange={e => setPassword(e.target.value)}
                           />
                         </div>
 
-                        <button
-                          className="btn btn-primary btn-rounded w-100"
-                          type="submit"
-                        >
-                          Sign In <i className="fas fa-sign-in-alt" />
-                        </button>
+                        {isLoading ?
+                          <button
+                            disabled
+                            className="btn btn-primary btn-rounded w-100"
+                            type="submit"
+                          >
+                            Processing <i className="fas fa-spinner fa-spin" />
+                          </button>
+                          :
+                          <button
+                            className="btn btn-primary btn-rounded w-100"
+                            type="submit"
+                          >
+                            Sign In <i className="fas fa-sign-in-alt" />
+                          </button>}
 
                         <div className="text-center">
                           <p className="mt-4">
