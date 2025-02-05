@@ -10,6 +10,7 @@ import CreatePassword from "./views/auth/CreatePassword";
 import StoreHeader from "./views/base/StoreHeader";
 import StoreFooter from "./views/base/StoreFooter";
 import MainWrapper from "./layout/MainWrapper";
+import Products from "./views/store/Products";
 
 function App() {
   return (
@@ -20,9 +21,13 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/create-new-password" element={<CreatePassword />} />
+
+        {/* Store Components */}
+        <Route path="/" element={<Products />} />
+
       </Routes>
       {/* </MainWrapper> */}
       <StoreFooter />
