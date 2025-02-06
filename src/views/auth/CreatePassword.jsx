@@ -11,7 +11,7 @@ function CreatePassword() {
   const [searchParams] = useSearchParams();
   const otp = searchParams.get("otp");
   const uidb64 = searchParams.get("uidb64");
-  const reset_token = searchParams.get('reset_token')
+  const reset_token = searchParams.get("reset_token");
 
   const handlePasswordSubmit = async e => {
     e.preventDefault();
@@ -100,22 +100,25 @@ function CreatePassword() {
                             } */}
                           </div>
 
-
                           <div className="text-center">
-                            {isLoading ?
+                            {isLoading ? (
                               <button
                                 disabled
                                 className="btn btn-primary btn-rounded w-100"
                               >
-                                Processing... <i className="fas fa-spinner fa-spin" />
+                                Processing...{" "}
+                                <i className="fas fa-spinner fa-spin" />
                               </button>
-                              :
-                              <button type='submit' className='btn btn-primary w-100'>
-                                Update Password <i className="fas fa-check-circle"></i>
+                            ) : (
+                              <button
+                                type="submit"
+                                className="btn btn-primary w-100"
+                              >
+                                Update Password{" "}
+                                <i className="fas fa-check-circle"></i>
                               </button>
-                            }
+                            )}
                           </div>
-
                         </form>
                       </div>
                     </div>

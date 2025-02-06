@@ -11,15 +11,18 @@ function ForgotPassword() {
   const handleSubmit = e => {
     setIsLoading(true);
     try {
-      apiInstance.get(`user/password-reset/${email}/`).then(res => {
-        console.log(res.data);
-        alert("The Password Reset Email has been sent to your email");
-        setIsLoading(false);
-        navigate("/create-new-password");
-      }).catch(err => {
-        alert("Email Does Not Exist");
-        setIsLoading(false);
-      });
+      apiInstance
+        .get(`user/password-reset/${email}/`)
+        .then(res => {
+          console.log(res.data);
+          alert("The Password Reset Email has been sent to your email");
+          setIsLoading(false);
+          navigate("/create-new-password");
+        })
+        .catch(err => {
+          alert("Email Does Not Exist");
+          setIsLoading(false);
+        });
     } catch (error) {
       alert("Email Does Not Exist");
       setIsLoading(false);
@@ -62,15 +65,22 @@ function ForgotPassword() {
                           </div>
 
                           <div className="text-center">
-                            {isLoading ?
+                            {isLoading ? (
                               <button
                                 disabled
                                 className="btn btn-primary btn-rounded w-100"
                               >
-                                Processing... <i className="fas fa-spinner fa-spin" />
+                                Processing...{" "}
+                                <i className="fas fa-spinner fa-spin" />
                               </button>
-                              :
-                              <button onClick={handleSubmit} className='btn btn-primary w-100'>Send Email</button>}
+                            ) : (
+                              <button
+                                onClick={handleSubmit}
+                                className="btn btn-primary w-100"
+                              >
+                                Send Email
+                              </button>
+                            )}
                           </div>
                           <div className="text-center mt-3">
                             <p>

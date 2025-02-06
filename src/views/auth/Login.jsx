@@ -85,20 +85,21 @@ function Login() {
                           />
                         </div>
 
-                        {isLoading ?
+                        {isLoading ? (
                           <button
                             disabled
                             className="btn btn-primary btn-rounded w-100"
                           >
                             Processing <i className="fas fa-spinner fa-spin" />
                           </button>
-                          :
+                        ) : (
                           <button
                             className="btn btn-primary btn-rounded w-100"
                             type="submit"
                           >
                             Sign In <i className="fas fa-sign-in-alt" />
-                          </button>}
+                          </button>
+                        )}
 
                         <div className="text-center">
                           <p className="mt-4">

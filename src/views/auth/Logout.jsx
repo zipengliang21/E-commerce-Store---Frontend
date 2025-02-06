@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { logout } from '../../utils/auth';
-import { Link } from 'react-router-dom';
-
+import { useEffect } from "react";
+import { logout } from "../../utils/auth";
+import { Link } from "react-router-dom";
 
 const Logout = () => {
   useEffect(() => {
@@ -18,9 +17,13 @@ const Logout = () => {
                   <div className="card rounded-5">
                     <div className="card-body p-4">
                       <h3 className="text-center">You have been logged out</h3>
-                      <div className="d-flex justify-content-center" >
-                        <Link to="/login" className='btn btn-primary me-2'>Login <i className='fas fa-sign-in-alt'></i> </Link>
-                        <Link to="/register" className='btn btn-primary'>Register <i className='fas fa-user-plus'></i> </Link>
+                      <div className="d-flex justify-content-center">
+                        <Link to="/login" className="btn btn-primary me-2">
+                          Login <i className="fas fa-sign-in-alt"></i>{" "}
+                        </Link>
+                        <Link to="/register" className="btn btn-primary">
+                          Register <i className="fas fa-user-plus"></i>{" "}
+                        </Link>
                       </div>
                     </div>
                   </div>
