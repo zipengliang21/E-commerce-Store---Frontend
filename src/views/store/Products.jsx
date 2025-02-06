@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
-
-import apiInstance from '../../utils/axios'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import apiInstance from "../../utils/axios";
 
 function Products() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,36 +19,57 @@ function Products() {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await apiInstance.get("category/");
+        setCategory(response.data);
+        console.log(category);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchCategory();
+  }, []);
 
   return (
     <>
-      <main className='mt-5'>
+      <main className="mt-5">
         <div className="container">
           <div className="text-center">
             <div className="row">
               {products?.map((p, index) => (
-                <div className="col-lg-4 col-md-12 mb-4">
+                <div className="col-lg-4 col-md-12 mb-4" key={index}>
                   <div className="card">
                     <div
                       className="bg-image hover-zoom ripple"
                       data-mdb-ripple-color="light"
                     >
-                      <img
-                        src={p.image}
-                        className="w-100"
-                        style={{ width: "100%", height: "250px", objectFit: "cover" }}
-                      />
+                      <Link to={`/detail/${p.slug}/`}>
+                        <img
+                          src={p.image}
+                          className="w-100"
+                          style={{
+                            width: "100%",
+                            height: "250px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </Link>
                     </div>
                     <div className="card-body">
-                      <a href="" className="text-reset">
+                      <Link to={`/detail/${p.slug}/`} className="text-reset">
                         <h5 className="card-title mb-3">{p.title}</h5>
-                      </a>
-                      <a href="" className="text-reset">
+                      </Link>
+                      <div className="text-reset">
                         <p>{p.category?.title}</p>
-                      </a>
-                      <div className='d-flex justify-content-center'>
+                      </div>
+                      <div className="d-flex justify-content-center">
                         <h6 className="mb-3">${p.price}</h6>
-                        <h6 className="mb-3 text-muted ms-2"><strike>${p.old_price}</strike></h6>
+                        <h6 className="mb-3 text-muted ms-2">
+                          <strike>${p.old_price}</strike>
+                        </h6>
                       </div>
                       <div className="btn-group">
                         <button
@@ -138,11 +160,28 @@ function Products() {
                 </div>
               ))}
             </div>
+            <div className="row">
+              {category?.map((c, index) => (
+                <div className="col-lg-2">
+                  <img
+                    src={c.image}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                    alt=""
+                  />
+                  <h6>{c.title}</h6>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default Products
+export default Products;
