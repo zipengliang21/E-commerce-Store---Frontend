@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
 import GetCurrentAddress from "../plugin/UserCountry,";
+import UserData from "../plugin/UserData";
 
 function ProductDetail() {
   const [product, setProduct] = useState({});
@@ -17,7 +18,9 @@ function ProductDetail() {
 
   const param = useParams();
   const currentAddress = GetCurrentAddress()
-  // console.log(currentAddress)
+  const userData = UserData()
+
+  console.log(userData?.user_id)
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -51,6 +54,7 @@ function ProductDetail() {
   }
 
   const handleAddToCart = () => {
+    console.log(userData?.user_id)
     console.log(product.id)
     console.log(product.price)
     console.log(product.shipping_amount)
