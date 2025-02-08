@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import apiInstance from "../../utils/axios";
 import GetCurrentAddress from "../plugin/UserCountry,";
 import UserData from "../plugin/UserData";
+import CardID from "../plugin/CardID";
 
 function ProductDetail() {
   const [product, setProduct] = useState({});
@@ -20,7 +21,9 @@ function ProductDetail() {
   const currentAddress = GetCurrentAddress()
   const userData = UserData()
 
-  console.log(userData?.user_id)
+  const cardId = CardID()
+
+  console.log(cardId)
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -53,16 +56,36 @@ function ProductDetail() {
     setQtyValue(event.target.value)
   }
 
-  const handleAddToCart = () => {
-    console.log(userData?.user_id)
-    console.log(product.id)
-    console.log(product.price)
-    console.log(product.shipping_amount)
-    console.log(qtyValue)
-    console.log(sizeValue)
-    console.log(colorValue)
-    console.log(product.id)
-    console.log(currentAddress.country)
+  const handleAddToCart = async () => {
+    // console.log("user_id: " + userData?.user_id)
+    // console.log("cardId: " + cardId)
+    // console.log("product.id: " + product.id)
+    // console.log("product.price: " + product.price)
+    // console.log("product.shipping_amount: " + product.shipping_amount)
+    // console.log("qtyValue: " + qtyValue)
+    // console.log("sizeValue: " + sizeValue)
+    // console.log("colorValue: " + colorValue)
+    // console.log("product.id: " + product.id)
+    // console.log("currentAddress.country: " + currentAddress.country)
+
+    try {
+      const formData = new FormData()
+
+      formData.append("product_id", userData?.user_id)
+      formData.append("user_id", product.id)
+      formData.append("qty", qtyValue)
+      formData.append("price", product.price)
+      formData.append("shipping_amount", product.shipping_amount)
+      formData.append("country", currentAddress.country)
+      formData.append("size", sizeValue)
+      formData.append("color", colorValue)
+      formData.append("cart_id", cardId)
+
+      const response = await apiInstance.post(`cart-view/`, formData)
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
