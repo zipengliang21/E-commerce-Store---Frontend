@@ -96,16 +96,6 @@ function Products() {
                                   XXL
                                 </button>
                               </li>
-                              <li>
-                                <button className="btn btn-secondary btn-sm me-2 mb-1">
-                                  XXL
-                                </button>
-                              </li>
-                              <li>
-                                <button className="btn btn-secondary btn-sm me-2 mb-1">
-                                  XXL
-                                </button>
-                              </li>
                             </div>
                           </div>
                           <div className="d-flex flex-column mt-3">
