@@ -3,7 +3,16 @@ import { Link } from "react-router-dom";
 import apiInstance from "../../utils/axios";
 import GetCurrentAddress from "../plugin/UserCountry";
 import UserData from "../plugin/UserData";
-import CardID from "../plugin/CardID"
+import CardID from "../plugin/CardID";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -15,8 +24,8 @@ function Products() {
   const [selectedSize, setSelectedSize] = useState({});
 
   const currentAddress = GetCurrentAddress();
-  const userData = UserData()
-  const cartID = CardID()
+  const userData = UserData();
+  const cartID = CardID();
 
   const handleColorButtonClick = (e, productId, colorName) => {
     setSelectedColors(prevSelectedColors => ({
@@ -83,7 +92,12 @@ function Products() {
 
     const response = await apiInstance.post(`cart-view/`, formData);
     console.log(response.data);
-  }
+
+    Toast.fire({
+      icon: "success",
+      title: response.data.message,
+    });
+  };
 
   return (
     <>
@@ -180,7 +194,8 @@ function Products() {
                           {p.color?.length > 0 && (
                             <div className="d-flex flex-column mt-3">
                               <li className="p-1">
-                                <b>Color</b>: {selectedColors[p.id] || "Select a color"}
+                                <b>Color</b>:{" "}
+                                {selectedColors[p.id] || "Select a color"}
                               </li>
                               <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
                                 {p?.color?.map((color, index) => (
@@ -203,7 +218,9 @@ function Products() {
                             <button
                               type="button"
                               className="btn btn-primary me-1 mb-1"
-                              onClick={() => handleAddToCart(p.id, p.price, p.shipping_amount)}
+                              onClick={() =>
+                                handleAddToCart(p.id, p.price, p.shipping_amount)
+                              }
                             >
                               <i className="fas fa-shopping-cart" />
                             </button>

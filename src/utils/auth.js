@@ -2,6 +2,15 @@ import { useAuthStore } from "../store/auth";
 import axios from "./axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 export const login = async (email, password) => {
   try {
@@ -14,6 +23,10 @@ export const login = async (email, password) => {
       setAuthUser(data.access, data.refresh);
 
       // Alert - Sign In Successfully
+      Toast.fire({
+        icon: "success",
+        title: "Login Successfully",
+      });
     }
     return { data, error: null };
   } catch (error) {
@@ -37,6 +50,10 @@ export const register = async (full_name, email, phone, password, password2) => 
     if (status === 201) {
       await login(email, password);
       // Alert - Sign Up Successfully
+      Toast.fire({
+        icon: "success",
+        title: "Account Created Successfully",
+      });
     }
 
     return { data, error: null };
@@ -55,6 +72,10 @@ export const logout = () => {
   useAuthStore.getState().setUser(null);
   console.log("logged out");
   // Alert - Sign Out Successfully
+  Toast.fire({
+    icon: "success",
+    title: "Logout Successfully",
+  });
 };
 
 export const setUser = async () => {
