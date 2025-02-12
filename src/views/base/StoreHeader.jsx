@@ -202,6 +202,11 @@ function StoreHeader() {
                 </Link>
               </>
             )}
+            <Link className="btn btn-danger" to="/cart/">
+              <i className="fas fa-shopping-cart">
+                <span id="cart-total-items"></span>
+              </i>
+            </Link>
           </div>
         </div>
       </nav>
