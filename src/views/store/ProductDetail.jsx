@@ -13,17 +13,17 @@ function ProductDetail() {
   const [colors, setColors] = useState([]);
   const [size, setSize] = useState([]);
 
-  const [colorValue, setColorValue] = useState("No Color")
-  const [sizeValue, setSizeValue] = useState("No Size")
-  const [qtyValue, setQtyValue] = useState(1)
+  const [colorValue, setColorValue] = useState("No Color");
+  const [sizeValue, setSizeValue] = useState("No Size");
+  const [qtyValue, setQtyValue] = useState(1);
 
   const param = useParams();
-  const currentAddress = GetCurrentAddress()
-  const userData = UserData()
+  const currentAddress = GetCurrentAddress();
+  const userData = UserData();
 
-  const cardId = CardID()
+  const cardId = CardID();
 
-  console.log(cardId)
+  console.log(cardId);
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -42,19 +42,23 @@ function ProductDetail() {
     fetchProductDetail();
   }, []);
 
-  const handleColorButtonClick = (event) => {
-    const colorNameInput = event.target.closest(".color_button").parentNode.querySelector(".color_name")
-    setColorValue(colorNameInput.value)
-  }
+  const handleColorButtonClick = event => {
+    const colorNameInput = event.target
+      .closest(".color_button")
+      .parentNode.querySelector(".color_name");
+    setColorValue(colorNameInput.value);
+  };
 
-  const handleSizeButtonClick = (event) => {
-    const sizeNameInput = event.target.closest(".size_button").parentNode.querySelector(".size_name")
-    setSizeValue(sizeNameInput.value)
-  }
+  const handleSizeButtonClick = event => {
+    const sizeNameInput = event.target
+      .closest(".size_button")
+      .parentNode.querySelector(".size_name");
+    setSizeValue(sizeNameInput.value);
+  };
 
-  const handleQuantityChange = (event) => {
-    setQtyValue(event.target.value)
-  }
+  const handleQuantityChange = event => {
+    setQtyValue(event.target.value);
+  };
 
   const handleAddToCart = async () => {
     // console.log("user_id: " + userData?.user_id)
@@ -69,24 +73,24 @@ function ProductDetail() {
     // console.log("currentAddress.country: " + currentAddress.country)
 
     try {
-      const formData = new FormData()
+      const formData = new FormData();
 
-      formData.append("product_id", userData?.user_id)
-      formData.append("user_id", product.id)
-      formData.append("qty", qtyValue)
-      formData.append("price", product.price)
-      formData.append("shipping_amount", product.shipping_amount)
-      formData.append("country", currentAddress.country)
-      formData.append("size", sizeValue)
-      formData.append("color", colorValue)
-      formData.append("cart_id", cardId)
+      formData.append("product_id", userData?.user_id);
+      formData.append("user_id", product.id);
+      formData.append("qty", qtyValue);
+      formData.append("price", product.price);
+      formData.append("shipping_amount", product.shipping_amount);
+      formData.append("country", currentAddress.country);
+      formData.append("size", sizeValue);
+      formData.append("color", colorValue);
+      formData.append("cart_id", cardId);
 
-      const response = await apiInstance.post(`cart-view/`, formData)
-      console.log(response.data)
+      const response = await apiInstance.post(`cart-view/`, formData);
+      console.log(response.data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
     <main className="mb-4 mt-4">
@@ -219,7 +223,7 @@ function ProductDetail() {
                     </div>
 
                     {/* Size */}
-                    {size.length > 0 &&
+                    {size.length > 0 && (
                       <>
                         <div className="col-md-6 mb-4">
                           <div className="form-outline">
@@ -230,19 +234,26 @@ function ProductDetail() {
                           <div className="d-flex">
                             {size.map((s, index) => (
                               <div key={index} className="me-2">
-                                <input type="hidden" className="size_name" value={s.name}></input>
-                                <button onClick={handleSizeButtonClick} className="btn btn-secondary size_button">
+                                <input
+                                  type="hidden"
+                                  className="size_name"
+                                  value={s.name}
+                                ></input>
+                                <button
+                                  onClick={handleSizeButtonClick}
+                                  className="btn btn-secondary size_button"
+                                >
                                   {s.name}
                                 </button>
                               </div>
                             ))}
                           </div>
                         </div>
-                      </>}
-
+                      </>
+                    )}
 
                     {/* Colors */}
-                    {colors.length > 0 &&
+                    {colors.length > 0 && (
                       <>
                         <div className="col-md-6 mb-4">
                           <div className="form-outline">
@@ -253,7 +264,13 @@ function ProductDetail() {
                           <div className="d-flex">
                             {colors.map((c, index) => (
                               <div key={index}>
-                                <input type="hidden" className="color_name" value={c.name} name="" id=""></input>
+                                <input
+                                  type="hidden"
+                                  className="color_name"
+                                  value={c.name}
+                                  name=""
+                                  id=""
+                                ></input>
                                 <button
                                   type="button"
                                   onClick={handleColorButtonClick}
@@ -264,9 +281,14 @@ function ProductDetail() {
                             ))}
                           </div>
                         </div>
-                      </>}
+                      </>
+                    )}
                   </div>
-                  <button type="button" className="btn btn-primary btn-rounded me-2" onClick={handleAddToCart}>
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-rounded me-2"
+                    onClick={handleAddToCart}
+                  >
                     <i className="fas fa-cart-plus me-2" /> Add to cart
                   </button>
                   <button

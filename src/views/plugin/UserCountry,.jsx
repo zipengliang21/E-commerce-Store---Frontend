@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function GetCurrentAddress() {
-  const [add, setAdd] = useState('');
+  const [add, setAdd] = useState("");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(pos => {

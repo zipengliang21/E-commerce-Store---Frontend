@@ -6,30 +6,68 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
 
+  const [colorValue, setColorValue] = useState("No Color");
+  const [sizeValue, setSizeValue] = useState("No Size");
+  const [qtyValue, setQtyValue] = useState(1);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedColors, setSelectedColors] = useState({});
+  const [selectedSize, setSelectedSize] = useState({});
+
+  const handleColorButtonClick = (e, productId, colorName) => {
+    setColorValue(colorName);
+    setSelectedProduct(productId);
+
+    setSelectedColors(prevSelectedColors => ({
+      ...prevSelectedColors,
+      [productId]: colorName,
+    }));
+  };
+
+  const handleSizeButtonClick = (e, productId, sizeName) => {
+    setSizeValue(sizeName);
+    setSelectedProduct(productId);
+
+    setSelectedSize(prevSelectedSize => ({
+      ...prevSelectedSize,
+      [productId]: sizeName,
+    }));
+  };
+
+  const handleQtyChange = (event, productId) => {
+    setQtyValue(event.target.value);
+    setSelectedProduct(productId);
+  };
+
+  console.log(selectedColors);
+  console.log(selectedSize);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await apiInstance.get("products/");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+    const fetchProducts = () => {
+      apiInstance
+        .get("products/")
+        .then(response => {
+          setProducts(response.data);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching products:", error);
+        });
+    };
+
+    const fetchCategory = () => {
+      apiInstance
+        .get("category/")
+        .then(response => {
+          setCategory(response.data);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching category:", error);
+        });
     };
 
     fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const response = await apiInstance.get("category/");
-        setCategory(response.data);
-        console.log(category);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchCategory();
   }, []);
 
@@ -88,41 +126,66 @@ function Products() {
                         >
                           <div className="d-flex flex-column">
                             <li className="p-1">
-                              <b>Size</b>: XL
+                              <b>Quantity</b>
                             </li>
+
                             <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
                               <li>
-                                <button className="btn btn-secondary btn-sm me-2 mb-1">
-                                  XXL
-                                </button>
-                              </li>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-column mt-3">
-                            <li className="p-1">
-                              <b>COlor</b>: Red
-                            </li>
-                            <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
-                              <li>
-                                <button
-                                  className="btn btn-sm me-2 mb-1 p-3"
-                                  style={{ backgroundColor: "red" }}
-                                />
-                              </li>
-                              <li>
-                                <button
-                                  className="btn btn-sm me-2 mb-1 p-3"
-                                  style={{ backgroundColor: "green" }}
-                                />
-                              </li>
-                              <li>
-                                <button
-                                  className="btn btn-sm me-2 mb-1 p-3"
-                                  style={{ backgroundColor: "yellow" }}
+                                <input
+                                  className="form-control"
+                                  value={qtyValue}
+                                  onChange={e => handleQtyChange(e, p.id)}
+                                  type="number"
                                 />
                               </li>
                             </div>
                           </div>
+
+                          {p.size?.length > 0 && (
+                            <div className="d-flex flex-column">
+                              <li className="p-1">
+                                <b>Size</b>: {selectedSize[p.id] || "Select a size"}
+                              </li>
+
+                              <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
+                                {p.size?.map((size, index) => (
+                                  <li key={index}>
+                                    <button
+                                      onClick={e =>
+                                        handleSizeButtonClick(e, p.id, size.name)
+                                      }
+                                      className="btn btn-secondary btn-sm me-2 mb-1"
+                                    >
+                                      {size.name}
+                                    </button>
+                                  </li>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {p.color?.length > 0 && (
+                            <div className="d-flex flex-column mt-3">
+                              <li className="p-1">
+                                <b>Color</b>:{" "}
+                                {selectedColors[p.id] || "Select a color"}
+                              </li>
+                              <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
+                                {p?.color?.map((color, index) => (
+                                  <li key={index}>
+                                    <button
+                                      className="btn btn-sm me-2 mb-1 p-3"
+                                      style={{
+                                        backgroundColor: `${color.color_code}`,
+                                      }}
+                                      onClick={e =>
+                                        handleColorButtonClick(e, p.id, color.name)
+                                      }
+                                    />
+                                  </li>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                           <div className="d-flex mt-3 p-1">
                             <button
                               type="button"
@@ -152,7 +215,7 @@ function Products() {
             </div>
             <div className="row">
               {category?.map((c, index) => (
-                <div className="col-lg-2">
+                <div className="col-lg-2" key={index}>
                   <img
                     src={c.image}
                     style={{
