@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import apiInstance from "../../utils/axios";
+import GetCurrentAddress from "../plugin/UserCountry";
+import UserData from "../plugin/UserData";
+import CardID from "../plugin/CardID"
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
 
-  const [colorValue, setColorValue] = useState("No Color");
-  const [sizeValue, setSizeValue] = useState("No Size");
   const [qtyValue, setQtyValue] = useState(1);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedColors, setSelectedColors] = useState({});
   const [selectedSize, setSelectedSize] = useState({});
 
-  const handleColorButtonClick = (e, productId, colorName) => {
-    setColorValue(colorName);
-    setSelectedProduct(productId);
+  const currentAddress = GetCurrentAddress();
+  const userData = UserData()
+  const cartID = CardID()
 
+  const handleColorButtonClick = (e, productId, colorName) => {
     setSelectedColors(prevSelectedColors => ({
       ...prevSelectedColors,
       [productId]: colorName,
@@ -25,9 +26,6 @@ function Products() {
   };
 
   const handleSizeButtonClick = (e, productId, sizeName) => {
-    setSizeValue(sizeName);
-    setSelectedProduct(productId);
-
     setSelectedSize(prevSelectedSize => ({
       ...prevSelectedSize,
       [productId]: sizeName,
@@ -36,7 +34,6 @@ function Products() {
 
   const handleQtyChange = (event, productId) => {
     setQtyValue(event.target.value);
-    setSelectedProduct(productId);
   };
 
   console.log(selectedColors);
@@ -70,6 +67,23 @@ function Products() {
     fetchProducts();
     fetchCategory();
   }, []);
+
+  const handleAddToCart = async (productId, price, shippingAmount) => {
+    const formData = new FormData();
+
+    formData.append("product_id", productId);
+    formData.append("user_id", userData?.user_id);
+    formData.append("qty", qtyValue);
+    formData.append("price", price);
+    formData.append("shipping_amount", shippingAmount);
+    formData.append("country", currentAddress.country);
+    formData.append("size", selectedSize[productId]);
+    formData.append("color", selectedColors[productId]);
+    formData.append("cart_id", cartID);
+
+    const response = await apiInstance.post(`cart-view/`, formData);
+    console.log(response.data);
+  }
 
   return (
     <>
@@ -166,8 +180,7 @@ function Products() {
                           {p.color?.length > 0 && (
                             <div className="d-flex flex-column mt-3">
                               <li className="p-1">
-                                <b>Color</b>:{" "}
-                                {selectedColors[p.id] || "Select a color"}
+                                <b>Color</b>: {selectedColors[p.id] || "Select a color"}
                               </li>
                               <div className="p-1 mt-0 pt-0 d-flex flex-wrap">
                                 {p?.color?.map((color, index) => (
@@ -190,6 +203,7 @@ function Products() {
                             <button
                               type="button"
                               className="btn btn-primary me-1 mb-1"
+                              onClick={() => handleAddToCart(p.id, p.price, p.shipping_amount)}
                             >
                               <i className="fas fa-shopping-cart" />
                             </button>
