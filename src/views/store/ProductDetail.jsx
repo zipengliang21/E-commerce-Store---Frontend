@@ -75,8 +75,8 @@ function ProductDetail() {
     try {
       const formData = new FormData();
 
-      formData.append("product_id", userData?.user_id);
-      formData.append("user_id", product.id);
+      formData.append("user_id", userData?.user_id);
+      formData.append("product_id", product.id);
       formData.append("qty", qtyValue);
       formData.append("price", product.price);
       formData.append("shipping_amount", product.shipping_amount);
