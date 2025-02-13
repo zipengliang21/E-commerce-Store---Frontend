@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 // Icons
 import { FaCheckCircle } from 'react-icons/fa';
 
-// import { addToCart } from '../plugin/AddToCart';
+import { addToCart } from '../plugin/AddToCart';
 import apiInstance from '../../utils/axios';
 import GetCurrentAddress from '../plugin/UserCountry';
 import UserData from '../plugin/UserData';
@@ -26,8 +26,6 @@ function Cart() {
   const [state, setState] = useState("")
   const [country, setCountry] = useState("")
   // const [cartCount, setCartCount] = useContext(CartContext);
-
-
 
   const axios = apiInstance
   const userData = UserData()
@@ -80,7 +78,7 @@ function Cart() {
       initialQuantities[c.product.id] = c.qty
     });
     setProductQuantities(initialQuantities);
-  }, productQuantities);
+  }, [cart]);
 
   const handleQtyChange = (event, product_id) => {
     const quantity = event.target.value;
@@ -94,11 +92,6 @@ function Cart() {
 
   const UpdateCart = async (cart_id, item_id, product_id, price, shipping_amount, color, size) => {
     const qtyValue = productQuantities[product_id];
-
-    // console.log("cart_id:", cart_id);
-    // console.log("item_id:", item_id);
-    // console.log("qtyValue:", qtyValue);
-    // console.log("product_id:", product_id);
 
     try {
       // Await the addToCart function
@@ -227,7 +220,7 @@ function Cart() {
                     <section className="mb-5">
 
                       {cart.map((c, index) => (
-                        <div className="row border-bottom mb-4">
+                        <div className="row border-bottom mb-4" key={index}>
                           <div className="col-md-2 mb-4 mb-md-0">
                             <div
                               className="bg-image ripple rounded-5 mb-4 overflow-hidden d-block"
