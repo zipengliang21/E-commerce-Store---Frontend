@@ -108,16 +108,21 @@ function Cart() {
   };
 
   // Remove Item From Cart
-  const handleDeleteClick = async (cartId, itemId) => {
+  const handleDeleteClick = async (itemId) => {
     const url = userData?.user_id
-      ? `cart-delete/${cartId}/${itemId}/${userData.user_id}/`
-      : `cart-delete/${cartId}/${itemId}/`;
+      ? `cart-delete/${cart_id}/${itemId}/${userData.user_id}/`
+      : `cart-delete/${cart_id}/${itemId}/`;
 
     try {
       await axios.delete(url);
       // Add any additional logic or state updates after successful deletion
       fetchCartData(cart_id, userData?.user_id)
       fetchCartTotal(cart_id, userData?.user_id)
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Item Removed From Cart'
+      });
 
       const cart_url = userData?.user_id ? `cart-list/${cart_id}/${userData?.user_id}/` : `cart-list/${cart_id}/`;
       const response = await axios.get(cart_url);
@@ -273,7 +278,7 @@ function Cart() {
                               <span>{c.product.vendor.name}</span>
                             </p>
                             <p className="mt-3">
-                              <button onClick={() => handleDeleteClick(cart_id, c.id)} className="btn btn-danger ">
+                              <button onClick={() => handleDeleteClick(c.id)} className="btn btn-danger ">
                                 <small><i className="fas fa-trash me-2" />Remove</small>
                               </button>
                             </p>
