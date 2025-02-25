@@ -1,55 +1,57 @@
-import { React, useEffect, useState, useContext } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
+import { React, useEffect, useState, useContext } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 // Icons
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle } from "react-icons/fa";
 
-import { addToCart } from '../plugin/AddToCart';
-import apiInstance from '../../utils/axios';
-import GetCurrentAddress from '../plugin/UserCountry';
-import UserData from '../plugin/UserData';
-import CartID from '../plugin/CardID';
+import { addToCart } from "../plugin/AddToCart";
+import apiInstance from "../../utils/axios";
+import GetCurrentAddress from "../plugin/UserCountry";
+import UserData from "../plugin/UserData";
+import CartID from "../plugin/CardID";
 // import { CartContext } from '../plugin/Context';
 
 function Cart() {
-  const [cart, setCart] = useState([])
-  const [cartTotal, setCartTotal] = useState([])
+  const [cart, setCart] = useState([]);
+  const [cartTotal, setCartTotal] = useState([]);
   const [productQuantities, setProductQuantities] = useState({});
-  let [isAddingToCart, setIsAddingToCart] = useState('')
+  let [isAddingToCart, setIsAddingToCart] = useState("");
 
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [mobile, setMobile] = useState("")
-  const [address, setAddress] = useState("")
-  const [city, setCity] = useState("")
-  const [state, setState] = useState("")
-  const [country, setCountry] = useState("")
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
   // const [cartCount, setCartCount] = useContext(CartContext);
 
-  const axios = apiInstance
-  const userData = UserData()
-  let cart_id = CartID()
-  const currentAddress = GetCurrentAddress()
+  const axios = apiInstance;
+  const userData = UserData();
+  let cart_id = CartID();
+  const currentAddress = GetCurrentAddress();
   let navigate = useNavigate();
 
   // Get cart Items
   const fetchCartData = (cartId, userId) => {
     const url = userId ? `cart-list/${cartId}/${userId}/` : `cart-list/${cartId}/`;
 
-    axios.get(url).then((res) => {
+    axios.get(url).then(res => {
       setCart(res.data);
     });
   };
 
   // Get Cart Totals
   const fetchCartTotal = async (cartId, userId) => {
-    const url = userId ? `cart-detail/${cartId}/${userId}/` : `cart-detail/${cartId}/`
-    axios.get(url).then((res) => {
+    const url = userId
+      ? `cart-detail/${cartId}/${userId}/`
+      : `cart-detail/${cartId}/`;
+    axios.get(url).then(res => {
       setCartTotal(res.data);
     });
     // console.log(cartTotal);
-  }
+  };
 
   useEffect(() => {
     console.log(cartTotal);
@@ -71,36 +73,51 @@ function Cart() {
     window.location.href("/");
   }
 
-
   useEffect(() => {
     const initialQuantities = {};
-    cart.forEach((c) => {
-      initialQuantities[c.product.id] = c.qty
+    cart.forEach(c => {
+      initialQuantities[c.product.id] = c.qty;
     });
     setProductQuantities(initialQuantities);
   }, [cart]);
 
   const handleQtyChange = (event, product_id) => {
     const quantity = event.target.value;
-    setProductQuantities((prevQuantities) => ({
+    setProductQuantities(prevQuantities => ({
       ...prevQuantities,
       [product_id]: quantity,
     }));
   };
 
-
-
-  const UpdateCart = async (cart_id, item_id, product_id, price, shipping_amount, color, size) => {
+  const UpdateCart = async (
+    cart_id,
+    item_id,
+    product_id,
+    price,
+    shipping_amount,
+    color,
+    size,
+  ) => {
     const qtyValue = productQuantities[product_id];
 
     try {
       // Await the addToCart function
-      await addToCart(product_id, userData?.user_id, qtyValue, price, shipping_amount, currentAddress.country, color, size, cart_id, isAddingToCart);
+      await addToCart(
+        product_id,
+        userData?.user_id,
+        qtyValue,
+        price,
+        shipping_amount,
+        currentAddress.country,
+        color,
+        size,
+        cart_id,
+        isAddingToCart,
+      );
 
       // Fetch the latest cart data after addToCart is completed
-      fetchCartData(cart_id, userData?.user_id)
-      fetchCartTotal(cart_id, userData?.user_id)
-
+      fetchCartData(cart_id, userData?.user_id);
+      fetchCartTotal(cart_id, userData?.user_id);
     } catch (error) {
       // Handle error, e.g., display an error message
       console.log(error);
@@ -108,7 +125,7 @@ function Cart() {
   };
 
   // Remove Item From Cart
-  const handleDeleteClick = async (itemId) => {
+  const handleDeleteClick = async itemId => {
     const url = userData?.user_id
       ? `cart-delete/${cart_id}/${itemId}/${userData.user_id}/`
       : `cart-delete/${cart_id}/${itemId}/`;
@@ -116,51 +133,50 @@ function Cart() {
     try {
       await axios.delete(url);
       // Add any additional logic or state updates after successful deletion
-      fetchCartData(cart_id, userData?.user_id)
-      fetchCartTotal(cart_id, userData?.user_id)
+      fetchCartData(cart_id, userData?.user_id);
+      fetchCartTotal(cart_id, userData?.user_id);
 
       Toast.fire({
-        icon: 'success',
-        title: 'Item Removed From Cart'
+        icon: "success",
+        title: "Item Removed From Cart",
       });
 
-      const cart_url = userData?.user_id ? `cart-list/${cart_id}/${userData?.user_id}/` : `cart-list/${cart_id}/`;
+      const cart_url = userData?.user_id
+        ? `cart-list/${cart_id}/${userData?.user_id}/`
+        : `cart-list/${cart_id}/`;
       const response = await axios.get(cart_url);
 
       setCartCount(response.data.length);
-
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
       // Handle errors or update state accordingly
     }
   };
 
-
-
   // Shipping Details
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
     // Use computed property names to dynamically set the state based on input name
     switch (name) {
-      case 'fullName':
+      case "fullName":
         setFullName(value);
         break;
-      case 'email':
+      case "email":
         setEmail(value);
         break;
-      case 'mobile':
+      case "mobile":
         setMobile(value);
         break;
-      case 'address':
+      case "address":
         setAddress(value);
         break;
-      case 'city':
+      case "city":
         setCity(value);
         break;
-      case 'state':
+      case "state":
         setState(value);
         break;
-      case 'country':
+      case "country":
         setCountry(value);
         break;
       default:
@@ -168,47 +184,38 @@ function Cart() {
     }
   };
 
-
-
   const createCartOrder = async () => {
-
     if (!fullName || !email || !mobile || !address || !city || !state || !country) {
       // If any required field is missing, show an error message or take appropriate action
       console.log("Please fill in all required fields");
       Swal.fire({
-        icon: 'warning',
-        title: 'Missing Fields!',
+        icon: "warning",
+        title: "Missing Fields!",
         text: "All fields are required before checkout",
-      })
+      });
       return;
     }
 
     try {
-
       const formData = new FormData();
-      formData.append('full_name', fullName);
-      formData.append('email', email);
-      formData.append('mobile', mobile);
-      formData.append('address', address);
-      formData.append('city', city);
-      formData.append('state', state);
-      formData.append('country', country);
-      formData.append('cart_id', cart_id);
-      formData.append('user_id', userData ? userData.user_id : 0);
+      formData.append("full_name", fullName);
+      formData.append("email", email);
+      formData.append("mobile", mobile);
+      formData.append("address", address);
+      formData.append("city", city);
+      formData.append("state", state);
+      formData.append("country", country);
+      formData.append("cart_id", cart_id);
+      formData.append("user_id", userData ? userData.user_id : 0);
 
-      const response = await axios.post('create-order/', formData)
+      const response = await axios.post("create-order/", formData);
       console.log(response.data.order_oid);
 
       navigate(`/checkout/${response.data.order_oid}`);
-
     } catch (error) {
       console.log(error);
     }
-  }
-
-
-
-
+  };
 
   return (
     <div>
@@ -223,7 +230,6 @@ function Cart() {
                   <div className="col-lg-8 mb-4 mb-md-0">
                     {/* Section: Product list */}
                     <section className="mb-5">
-
                       {cart.map((c, index) => (
                         <div className="row border-bottom mb-4" key={index}>
                           <div className="col-md-2 mb-4 mb-md-0">
@@ -236,7 +242,11 @@ function Cart() {
                                   src={c?.product?.image}
                                   className="w-100"
                                   alt=""
-                                  style={{ height: "100px", objectFit: "cover", borderRadius: "10px" }}
+                                  style={{
+                                    height: "100px",
+                                    objectFit: "cover",
+                                    borderRadius: "10px",
+                                  }}
                                 />
                               </Link>
                               <a href="#!">
@@ -244,7 +254,7 @@ function Cart() {
                                   <div
                                     className="mask"
                                     style={{
-                                      backgroundColor: "hsla(0, 0%, 98.4%, 0.2)"
+                                      backgroundColor: "hsla(0, 0%, 98.4%, 0.2)",
                                     }}
                                   />
                                 </div>
@@ -252,34 +262,45 @@ function Cart() {
                             </div>
                           </div>
                           <div className="col-md-8 mb-4 mb-md-0">
-                            <Link to={`/detail/${c.product.slug}`} className="fw-bold text-dark mb-4">{c?.product?.title.slice(0, 20)}...</Link>
-                            {c.size != "No Size" &&
+                            <Link
+                              to={`/detail/${c.product.slug}`}
+                              className="fw-bold text-dark mb-4"
+                            >
+                              {c?.product?.title.slice(0, 20)}...
+                            </Link>
+                            {c.size != "No Size" && (
                               <p className="mb-0">
                                 <span className="text-muted me-2">Size:</span>
                                 <span>{c.size}</span>
                               </p>
-                            }
-                            {c.color != "No Color" &&
-                              <p className='mb-0'>
+                            )}
+                            {c.color != "No Color" && (
+                              <p className="mb-0">
                                 <span className="text-muted me-2">Color:</span>
                                 <span>{c.color}</span>
                               </p>
-                            }
-                            <p className='mb-0'>
+                            )}
+                            <p className="mb-0">
                               <span className="text-muted me-2">Price:</span>
                               <span>${c.product.price}</span>
                             </p>
-                            <p className='mb-0'>
+                            <p className="mb-0">
                               <span className="text-muted me-2">Stock Qty:</span>
                               <span>{c.product.stock_qty}</span>
                             </p>
-                            <p className='mb-0'>
+                            <p className="mb-0">
                               <span className="text-muted me-2">Vendor:</span>
                               <span>{c.product.vendor.name}</span>
                             </p>
                             <p className="mt-3">
-                              <button onClick={() => handleDeleteClick(c.id)} className="btn btn-danger ">
-                                <small><i className="fas fa-trash me-2" />Remove</small>
+                              <button
+                                onClick={() => handleDeleteClick(c.id)}
+                                className="btn btn-danger "
+                              >
+                                <small>
+                                  <i className="fas fa-trash me-2" />
+                                  Remove
+                                </small>
                               </button>
                             </p>
                           </div>
@@ -290,26 +311,45 @@ function Cart() {
                                   type="number"
                                   id={`qtyInput-${c.product.id}`}
                                   className="form-control"
-                                  onChange={(e) => handleQtyChange(e, c.product.id)}
+                                  onChange={e => handleQtyChange(e, c.product.id)}
                                   value={productQuantities[c.product.id] || c.qty}
                                   min={1}
-
                                 />
                               </div>
-                              <button onClick={() => UpdateCart(cart_id, c.id, c.product.id, c.product.price, c.product.shipping_amount, c.color, c.size)} className='ms-2 btn btn-primary'><i className='fas fa-rotate-right'></i></button>
+                              <button
+                                onClick={() =>
+                                  UpdateCart(
+                                    cart_id,
+                                    c.id,
+                                    c.product.id,
+                                    c.product.price,
+                                    c.product.shipping_amount,
+                                    c.color,
+                                    c.size,
+                                  )
+                                }
+                                className="ms-2 btn btn-primary"
+                              >
+                                <i className="fas fa-rotate-right"></i>
+                              </button>
                             </div>
-                            <h5 className="mb-2 mt-3 text-center"><span className="align-middle">${c.sub_total}</span></h5>
+                            <h5 className="mb-2 mt-3 text-center">
+                              <span className="align-middle">${c.sub_total}</span>
+                            </h5>
                           </div>
                         </div>
                       ))}
 
-                      {cart.length < 1 &&
+                      {cart.length < 1 && (
                         <>
                           <h5>Your Cart Is Empty</h5>
-                          <Link to='/'> <i className='fas fa-shopping-cart'></i> Continue Shopping</Link>
+                          <Link to="/">
+                            {" "}
+                            <i className="fas fa-shopping-cart"></i> Continue
+                            Shopping
+                          </Link>
                         </>
-                      }
-
+                      )}
                     </section>
                     <div>
                       <h5 className="mb-4 mt-4">Personal Information</h5>
@@ -317,43 +357,48 @@ function Cart() {
                       <div className="row mb-4">
                         <div className="col">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="full_name"> <i className='fas fa-user'></i> Full Name</label>
+                            <label className="form-label" htmlFor="full_name">
+                              {" "}
+                              <i className="fas fa-user"></i> Full Name
+                            </label>
                             <input
                               type="text"
                               id=""
-                              name='fullName'
+                              name="fullName"
                               className="form-control"
                               onChange={handleChange}
                               value={fullName}
                             />
                           </div>
                         </div>
-
                       </div>
 
                       <div className="row mb-4">
                         <div className="col">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"><i className='fas fa-envelope'></i> Email</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              <i className="fas fa-envelope"></i> Email
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='email'
+                              name="email"
                               onChange={handleChange}
                               value={email}
-
                             />
                           </div>
                         </div>
                         <div className="col">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"><i className='fas fa-phone'></i> Mobile</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              <i className="fas fa-phone"></i> Mobile
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='mobile'
+                              name="mobile"
                               onChange={handleChange}
                               value={mobile}
                             />
@@ -366,12 +411,15 @@ function Cart() {
                       <div className="row mb-4">
                         <div className="col-lg-6 mt-3">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"> Address</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              {" "}
+                              Address
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='address'
+                              name="address"
                               onChange={handleChange}
                               value={address}
                             />
@@ -379,12 +427,15 @@ function Cart() {
                         </div>
                         <div className="col-lg-6 mt-3">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"> City</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              {" "}
+                              City
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='city'
+                              name="city"
                               onChange={handleChange}
                               value={city}
                             />
@@ -393,12 +444,15 @@ function Cart() {
 
                         <div className="col-lg-6 mt-3">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"> State</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              {" "}
+                              State
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='state'
+                              name="state"
                               onChange={handleChange}
                               value={state}
                             />
@@ -406,12 +460,15 @@ function Cart() {
                         </div>
                         <div className="col-lg-6 mt-3">
                           <div className="form-outline">
-                            <label className="form-label" htmlFor="form6Example1"> Country</label>
+                            <label className="form-label" htmlFor="form6Example1">
+                              {" "}
+                              Country
+                            </label>
                             <input
                               type="text"
                               id="form6Example1"
                               className="form-control"
-                              name='country'
+                              name="country"
                               onChange={handleChange}
                               value={country}
                             />
@@ -445,20 +502,29 @@ function Cart() {
                         <span>Total </span>
                         <span>${cartTotal.total?.toFixed(2)}</span>
                       </div>
-                      {cart.length > 0 &&
+                      {cart.length > 0 && (
                         <button
                           onClick={createCartOrder}
                           className="btn btn-primary btn-rounded w-100"
                         >
                           Got to checkout
                         </button>
-                      }
+                      )}
                     </section>
                     <section className="shadow rounded-3 card p-4 rounded-5">
                       <h5 className="mb-4">Apply promo code</h5>
                       <div className="d-flex aligh-items-center">
-                        <input type="text" className="form-control rounded me-1" placeholder="Promo code" />
-                        <button type="button" className="btn btn-success btn-rounded overflow-visible">Apply</button>
+                        <input
+                          type="text"
+                          className="form-control rounded me-1"
+                          placeholder="Promo code"
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-success btn-rounded overflow-visible"
+                        >
+                          Apply
+                        </button>
                       </div>
                     </section>
                   </div>
@@ -469,7 +535,7 @@ function Cart() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;
