@@ -19,6 +19,12 @@ function Orders() {
 
   console.log(orders);
 
+  const statusCounts = orders.reduce((counts, order) => {
+    const status = order.order_status;
+    counts[status] = (counts[status] || 0) + 1;
+    return counts;
+  }, {});
+
   return (
     <div className="container mt-5">
       <section className="">
@@ -45,7 +51,7 @@ function Orders() {
                             <div className="">
                               <p className="mb-1">Orders</p>
                               <h2 className="mb-0">
-                                {orders.length}
+                                {orders?.length}
                                 <span
                                   className=""
                                   style={{ fontSize: "0.875rem" }}
@@ -74,7 +80,7 @@ function Orders() {
                             <div className="">
                               <p className="mb-1">Pending Delivery</p>
                               <h2 className="mb-0">
-                                6
+                                {statusCounts["pending"] || 0}
                                 <span
                                   className=""
                                   style={{ fontSize: "0.875rem" }}
@@ -103,7 +109,7 @@ function Orders() {
                             <div className="">
                               <p className="mb-1">Fulfilled Orders</p>
                               <h2 className="mb-0">
-                                2
+                                {statusCounts["fulfilled"] || 0}
                                 <span
                                   className=""
                                   style={{ fontSize: "0.875rem" }}
