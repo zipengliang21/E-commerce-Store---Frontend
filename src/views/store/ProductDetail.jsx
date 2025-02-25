@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
@@ -6,6 +6,16 @@ import GetCurrentAddress from "../plugin/UserCountry";
 import UserData from "../plugin/UserData";
 import CardID from "../plugin/CardID";
 import moment from "moment";
+import { CartContext } from "../plugin/Context";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 function ProductDetail() {
   const [product, setProduct] = useState({});
@@ -18,8 +28,15 @@ function ProductDetail() {
   const [sizeValue, setSizeValue] = useState("No Size");
   const [qtyValue, setQtyValue] = useState(1);
 
-  const [createReview, setCreateReview] = useState({ user_id: 0, product_id: product?.id, review: "", rating: 0 })
+  const [createReview, setCreateReview] = useState({
+    user_id: 0,
+    product_id: product?.id,
+    review: "",
+    rating: 0,
+  });
   const [reviews, setReviews] = useState([]);
+
+  const [cartCount, setCartCount] = useContext(CartContext);
 
   const param = useParams();
   const currentAddress = GetCurrentAddress();
@@ -78,51 +95,62 @@ function ProductDetail() {
       formData.append("color", colorValue);
       formData.append("cart_id", cardId);
 
-      const response = await apiInstance.post(`cart-view/`, formData);
-      console.log(response.data);
+      await apiInstance.post(`cart-view/`, formData);
+
+      const url = userData?.user_id
+        ? `cart-list/${cardId}/${userData?.user_id}/`
+        : `cart-list/${cardId}/`;
+      const response = await apiInstance.get(url);
+
+      setCartCount(response.data.length);
+      console.log(response.data.length);
+      Toast.fire({
+        icon: "success",
+        title: "Added To Cart",
+      });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleReviewChange = (event) => {
+  const handleReviewChange = event => {
     setCreateReview({
       ...createReview,
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
     console.log(createReview);
-  }
+  };
 
   const fetchReviewData = async () => {
     if (product.id) {
-      apiInstance.get(`reviews/${product?.id}/`).then((res) => {
+      apiInstance.get(`reviews/${product?.id}/`).then(res => {
         setReviews(res.data);
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    fetchReviewData()
-  }, [product])
+    fetchReviewData();
+  }, [product]);
 
-  const handleReviewSubmit = (e) => {
-    e.preventDefault()
+  const handleReviewSubmit = e => {
+    e.preventDefault();
 
-    const formdata = new FormData()
+    const formdata = new FormData();
 
-    formdata.append('user_id', userData?.user_id)
-    formdata.append('product_id', product?.id)
-    formdata.append('rating', createReview.rating)
-    formdata.append('review', createReview.review)
+    formdata.append("user_id", userData?.user_id);
+    formdata.append("product_id", product?.id);
+    formdata.append("rating", createReview.rating);
+    formdata.append("review", createReview.review);
 
-    apiInstance.post(`create-review/`, formdata).then((res) => {
-      fetchReviewData()
+    apiInstance.post(`create-review/`, formdata).then(res => {
+      fetchReviewData();
       Swal.fire({
         icon: "success",
-        title: "Review created successfully"
-      })
-    })
-  }
+        title: "Review created successfully",
+      });
+    });
+  };
 
   return (
     <main className="mb-4 mt-4">
@@ -452,7 +480,12 @@ function ProductDetail() {
                       <label htmlFor="username" className="form-label">
                         Rating
                       </label>
-                      <select name="rating" onChange={handleReviewChange} className="form-select" id="">
+                      <select
+                        name="rating"
+                        onChange={handleReviewChange}
+                        className="form-select"
+                        id=""
+                      >
                         <option value="1">1 Star</option>
                         <option value="2">2 Star</option>
                         <option value="3">3 Star</option>
@@ -485,7 +518,7 @@ function ProductDetail() {
                   <h2>Existing Reviews</h2>
                   {reviews?.map((review, index) => (
                     <div className="card mb-3" key={index}>
-                      <div className="row g-0" >
+                      <div className="row g-0">
                         <div className="col-md-3">
                           <img
                             src={review.profile?.image}
@@ -495,12 +528,17 @@ function ProductDetail() {
                         </div>
                         <div className="col-md-9">
                           <div className="card-body">
-                            <h5 className="card-title">{review.profile.full_name}</h5>
-                            <p className="card-text">{moment(review.date).format("dddd, MMMM Do YYYY, h:mm:ss a")}</p> <br />
-                            <p className="card-text">Rating: {review.rating}</p>
+                            <h5 className="card-title">
+                              {review.profile.full_name}
+                            </h5>
                             <p className="card-text">
-                              {review.review}
-                            </p>
+                              {moment(review.date).format(
+                                "dddd, MMMM Do YYYY, h:mm:ss a",
+                              )}
+                            </p>{" "}
+                            <br />
+                            <p className="card-text">Rating: {review.rating}</p>
+                            <p className="card-text">{review.review}</p>
                           </div>
                         </div>
                       </div>

@@ -10,7 +10,15 @@ import apiInstance from "../../utils/axios";
 import GetCurrentAddress from "../plugin/UserCountry";
 import UserData from "../plugin/UserData";
 import CartID from "../plugin/CardID";
-// import { CartContext } from '../plugin/Context';
+import { CartContext } from "../plugin/Context";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -25,7 +33,7 @@ function Cart() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-  // const [cartCount, setCartCount] = useContext(CartContext);
+  const [cartCount, setCartCount] = useContext(CartContext);
 
   const axios = apiInstance;
   const userData = UserData();
@@ -39,6 +47,7 @@ function Cart() {
 
     axios.get(url).then(res => {
       setCart(res.data);
+      setCartCount(res.data.length);
     });
   };
 

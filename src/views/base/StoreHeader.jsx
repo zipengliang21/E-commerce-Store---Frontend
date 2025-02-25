@@ -205,7 +205,8 @@ function StoreHeader() {
               </>
             )}
             <Link className="btn btn-danger" to="/cart/">
-              <i className="fas fa-shopping-cart">{" "}
+              <i className="fas fa-shopping-cart">
+                {" "}
                 <span id="cart-total-items">{cartCount}</span>
               </i>
             </Link>

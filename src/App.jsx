@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import UserData from './views/plugin/UserData';
-import CartID from './views/plugin/CardID';
-import apiInstance from './utils/axios';
+import UserData from "./views/plugin/UserData";
+import CartID from "./views/plugin/CardID";
+import apiInstance from "./utils/axios";
 
 import Login from "./views/auth/Login";
 import Register from "./views/auth/Register";
@@ -23,18 +23,19 @@ import Search from "./views/store/Search";
 import { CartContext } from "./views/plugin/Context";
 
 function App() {
-  const [cartCount, setCartCount] = useState()
-  const userData = UserData()
-  let cart_id = CartID()
-  const axios = apiInstance
-
+  const [cartCount, setCartCount] = useState();
+  const userData = UserData();
+  let cart_id = CartID();
+  const axios = apiInstance;
 
   useEffect(() => {
-    const url = userData?.user_id ? `cart-list/${cart_id}/${userData?.user_id}/` : `cart-list/${cart_id}/`;
-    axios.get(url).then((res) => {
-      setCartCount(res.data.length)
+    const url = userData?.user_id
+      ? `cart-list/${cart_id}/${userData?.user_id}/`
+      : `cart-list/${cart_id}/`;
+    axios.get(url).then(res => {
+      setCartCount(res.data.length);
     });
-  }, [])
+  }, []);
 
   return (
     <CartContext.Provider value={[cartCount, setCartCount]}>

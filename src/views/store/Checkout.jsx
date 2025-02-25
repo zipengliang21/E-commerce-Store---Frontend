@@ -23,7 +23,7 @@ function Checkout() {
 
   useEffect(() => {
     axios.get(`checkout/${param?.order_oid}/`).then(res => {
-      print(param?.order_oid)
+      print(param?.order_oid);
       setOrder(res.data);
     });
   }, [loading]);
