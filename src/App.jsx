@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import UserData from './views/plugin/UserData';
+import CartID from './views/plugin/CardID';
+import apiInstance from './utils/axios';
 
 import Login from "./views/auth/Login";
 import Register from "./views/auth/Register";
@@ -15,31 +19,49 @@ import ProductDetail from "./views/store/ProductDetail";
 import Cart from "./views/store/Cart";
 import Checkout from "./views/store/Checkout";
 import PaymentSuccess from "./views/store/PaymentSuccess";
+import Search from "./views/store/Search";
+import { CartContext } from "./views/plugin/Context";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <StoreHeader />
-      <MainWrapper>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/create-new-password" element={<CreatePassword />} />
+  const [cartCount, setCartCount] = useState()
+  const userData = UserData()
+  let cart_id = CartID()
+  const axios = apiInstance
 
-          {/* Store Components */}
-          <Route path="/" element={<Products />} />
-          <Route path="/detail/:slug" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout/:order_oid" element={<Checkout />} />
-          <Route path="/payment-success/:order_oid" element={<PaymentSuccess />} />
-        </Routes>
-      </MainWrapper>
-      <StoreFooter />
-    </BrowserRouter>
+
+  useEffect(() => {
+    const url = userData?.user_id ? `cart-list/${cart_id}/${userData?.user_id}/` : `cart-list/${cart_id}/`;
+    axios.get(url).then((res) => {
+      setCartCount(res.data.length)
+    });
+  }, [])
+
+  return (
+    <CartContext.Provider value={[cartCount, setCartCount]}>
+      <BrowserRouter>
+        <StoreHeader />
+        <MainWrapper>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/create-new-password" element={<CreatePassword />} />
+
+            {/* Store Components */}
+            <Route path="/" element={<Products />} />
+            <Route path="/detail/:slug" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout/:order_oid" element={<Checkout />} />
+            <Route path="/payment-success/:order_oid" element={<PaymentSuccess />} />
+            <Route path="/search" element={<Search />} />
+          </Routes>
+        </MainWrapper>
+        <StoreFooter />
+      </BrowserRouter>
+    </CartContext.Provider>
   );
 }
 

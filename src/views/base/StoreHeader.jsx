@@ -3,11 +3,13 @@ import { useAuthStore } from "../../store/auth";
 import { Link } from "react-router-dom";
 import apiInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../plugin/Context";
 
 function StoreHeader() {
   const [search, setSearch] = useState("");
 
   const [isLoggedIn, user] = useAuthStore(state => [state.isLoggedIn, state.user]);
+  const cartCount = useContext(CartContext)[0];
 
   console.log("user().vendor_id", user().vendor_id);
 
@@ -203,8 +205,8 @@ function StoreHeader() {
               </>
             )}
             <Link className="btn btn-danger" to="/cart/">
-              <i className="fas fa-shopping-cart">
-                <span id="cart-total-items"></span>
+              <i className="fas fa-shopping-cart">{" "}
+                <span id="cart-total-items">{cartCount}</span>
               </i>
             </Link>
           </div>
