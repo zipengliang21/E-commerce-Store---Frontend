@@ -23,6 +23,7 @@ import Search from "./views/store/Search";
 import { CartContext } from "./views/plugin/Context";
 import Account from "./views/customer/Account";
 import PrivateRoute from "./layout/PrivateRoute";
+import Orders from "./views/customer/Orders";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -62,7 +63,22 @@ function App() {
             <Route path="/search" element={<Search />} />
 
             {/* Customer Routes */}
-            <Route path="/customer/account" element={<PrivateRoute><Account /></PrivateRoute>} />
+            <Route
+              path="/customer/account"
+              element={
+                <PrivateRoute>
+                  <Account />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/customer/orders"
+              element={
+                <PrivateRoute>
+                  <Orders />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </MainWrapper>
         <StoreFooter />

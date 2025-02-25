@@ -1,10 +1,9 @@
-import React from 'react'
-import Sidebar from './Siderbar'
-import UseProfileData from '../plugin/UseProfileData'
-
+import React from "react";
+import Sidebar from "./Siderbar";
+import UseProfileData from "../plugin/UseProfileData";
 
 function Account() {
-  const userProfile = UseProfileData()
+  const userProfile = UseProfileData();
 
   return (
     <div>
@@ -25,8 +24,8 @@ function Account() {
                       <div className="row rounded shadow p-3">
                         <h2>Hi {userProfile?.full_name}, </h2>
                         <div className="col-lg-12 mb-4 mb-lg-0 h-100">
-                          From your account dashboard. you can easily check &amp; view
-                          your <a href="">orders</a>, manage your{" "}
+                          From your account dashboard. you can easily check &amp;
+                          view your <a href="">orders</a>, manage your{" "}
                           <a href="">
                             <shipping address="" a="">
                               {" "}
@@ -47,9 +46,8 @@ function Account() {
           {/*Section: Wishlist*/}
         </div>
       </main>
-
     </div>
-  )
+  );
 }
 
-export default Account
+export default Account;

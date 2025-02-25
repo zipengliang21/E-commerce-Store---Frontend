@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import apiInstance from '../../utils/axios';
-import UserData from '../plugin/UserData';
-
+import React, { useState, useEffect } from "react";
+import apiInstance from "../../utils/axios";
+import UserData from "../plugin/UserData";
 
 function UseProfileData() {
-  const [profile, setProfile] = useState([])
+  const [profile, setProfile] = useState([]);
 
-  const axios = apiInstance
-  const userData = UserData()
+  const axios = apiInstance;
+  const userData = UserData();
 
   useEffect(() => {
-    axios.get(`user/profile/${userData?.user_id}/`).then((res) => {
+    axios.get(`user/profile/${userData?.user_id}/`).then(res => {
       setProfile(res.data);
-    })
-  }, [])
-  return profile
+    });
+  }, []);
+  return profile;
 }
 
-export default UseProfileData
+export default UseProfileData;
