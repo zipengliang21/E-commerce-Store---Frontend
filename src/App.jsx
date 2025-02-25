@@ -24,6 +24,7 @@ import { CartContext } from "./views/plugin/Context";
 import Account from "./views/customer/Account";
 import PrivateRoute from "./layout/PrivateRoute";
 import Orders from "./views/customer/Orders";
+import OrderDetail from "./views/customer/OrderDetail";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -76,6 +77,13 @@ function App() {
               element={
                 <PrivateRoute>
                   <Orders />
+                </PrivateRoute>
+              }
+            /><Route
+              path="/customer/order/detail/:order_oid"
+              element={
+                <PrivateRoute>
+                  <OrderDetail />
                 </PrivateRoute>
               }
             />
