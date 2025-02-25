@@ -21,6 +21,8 @@ import Checkout from "./views/store/Checkout";
 import PaymentSuccess from "./views/store/PaymentSuccess";
 import Search from "./views/store/Search";
 import { CartContext } from "./views/plugin/Context";
+import Account from "./views/customer/Account";
+import PrivateRoute from "./layout/PrivateRoute";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -58,6 +60,9 @@ function App() {
             <Route path="/checkout/:order_oid" element={<Checkout />} />
             <Route path="/payment-success/:order_oid" element={<PaymentSuccess />} />
             <Route path="/search" element={<Search />} />
+
+            {/* Customer Routes */}
+            <Route path="/customer/account" element={<PrivateRoute><Account /></PrivateRoute>} />
           </Routes>
         </MainWrapper>
         <StoreFooter />
