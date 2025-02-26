@@ -6,6 +6,7 @@ import UserData from "../plugin/UserData";
 import CardID from "../plugin/CardID";
 import Swal from "sweetalert2";
 import { CartContext } from "../plugin/Context";
+import { AddToWishlist } from "../plugin/AddToWishlist";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -107,6 +108,14 @@ function Products() {
     response = await apiInstance.get(url);
 
     setCartCount(response.data.length);
+  };
+
+  const handleAddToWishlist = async product_id => {
+    try {
+      await AddToWishlist(product_id, userData?.user_id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -244,6 +253,7 @@ function Products() {
                         </ul>
                         <button
                           type="button"
+                          onClick={() => handleAddToWishlist(p.id)}
                           className="btn btn-danger px-3 me-1 ms-2"
                         >
                           <i className="fas fa-heart" />
