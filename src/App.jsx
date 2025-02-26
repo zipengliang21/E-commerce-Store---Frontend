@@ -26,6 +26,7 @@ import PrivateRoute from "./layout/PrivateRoute";
 import Orders from "./views/customer/Orders";
 import OrderDetail from "./views/customer/OrderDetail";
 import Wishlist from "./views/customer/Wishlist";
+import Notification from "./views/customer/Notifications";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -94,6 +95,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Wishlist />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/customer/notifications"
+              element={
+                <PrivateRoute>
+                  <Notification />
                 </PrivateRoute>
               }
             />
