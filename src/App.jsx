@@ -27,6 +27,7 @@ import Orders from "./views/customer/Orders";
 import OrderDetail from "./views/customer/OrderDetail";
 import Wishlist from "./views/customer/Wishlist";
 import Notification from "./views/customer/Notifications";
+import CustomerSettings from "./views/customer/Settings";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -103,6 +104,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Notification />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/customer/settings"
+              element={
+                <PrivateRoute>
+                  <CustomerSettings />
                 </PrivateRoute>
               }
             />
