@@ -27,14 +27,14 @@ function Notifications() {
         setLoading(false);
       }
     });
-  }
+  };
 
   useEffect(() => {
     fetchNoti();
   }, []);
 
-  const markNotiAsSeen = (notiId) => {
-    axios.get(`customer/notification/${userData?.user_id}/${notiId}/`).then((res) => {
+  const markNotiAsSeen = notiId => {
+    axios.get(`customer/notification/${userData?.user_id}/${notiId}/`).then(res => {
       console.log(res.data);
     });
     fetchNoti();
@@ -43,7 +43,6 @@ function Notifications() {
       title: "Notification marked as seen",
     });
   };
-
 
   return (
     <div>
@@ -97,7 +96,8 @@ function Notifications() {
                               <br />
                               <button
                                 onClick={() => markNotiAsSeen(noti.id)}
-                                className="btn btn-primary mt-2">
+                                className="btn btn-primary mt-2"
+                              >
                                 <i className="fas fa-eye"></i>
                               </button>
                             </a>

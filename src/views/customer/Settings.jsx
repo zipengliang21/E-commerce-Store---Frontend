@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import Sidebar from './Siderbar'
-import apiInstance from '../../utils/axios';
-import UserData from '../plugin/UserData';
-import UseProfileData from '../plugin/UseProfileData';
-import Swal from 'sweetalert2'
+import React, { useState, useEffect } from "react";
+import Sidebar from "./Siderbar";
+import apiInstance from "../../utils/axios";
+import UserData from "../plugin/UserData";
+import UseProfileData from "../plugin/UseProfileData";
+import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -15,95 +15,91 @@ const Toast = Swal.mixin({
 
 function Settings() {
   const [profileData, setProfileData] = useState({
-    'full_name': '',
-    'mobile': '',
-    'email': '',
-    'about': '',
-    'country': '',
-    'city': '',
-    'state': '',
-    'address': '',
-    'p_image': '',
+    "full_name": "",
+    "mobile": "",
+    "email": "",
+    "about": "",
+    "country": "",
+    "city": "",
+    "state": "",
+    "address": "",
+    "p_image": "",
   });
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-
-  const axios = apiInstance
-  const userData = UserData()
+  const axios = apiInstance;
+  const userData = UserData();
 
   useEffect(() => {
     // Fetch existing profile data
     const fetchProfileData = async () => {
       try {
-        axios.get(`user/profile/${userData?.user_id}/`).then((res) => {
+        axios.get(`user/profile/${userData?.user_id}/`).then(res => {
           // setProfileData(res.data);
           setProfileData({
-            'full_name': res.data?.full_name,
-            'email': res.data.user.email,
-            'phone': res.data.user.phone,
-            'about': res.data.about,
-            'country': res.data.country,
-            'city': res.data.city,
-            'state': res.data.state,
-            'address': res.data.address,
-            'p_image': res.data.image,
-          })
-        })
+            "full_name": res.data?.full_name,
+            "email": res.data.user.email,
+            "phone": res.data.user.phone,
+            "about": res.data.about,
+            "country": res.data.country,
+            "city": res.data.city,
+            "state": res.data.state,
+            "address": res.data.address,
+            "p_image": res.data.image,
+          });
+        });
       } catch (error) {
-        console.error('Error fetching profile data: ', error);
+        console.error("Error fetching profile data: ", error);
       }
     };
 
     fetchProfileData();
   }, []);
 
-
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setProfileData({
       ...profileData,
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = event => {
     setProfileData({
       ...profileData,
-      [event.target.name]: event.target.files[0]
-    })
-  }
+      [event.target.name]: event.target.files[0],
+    });
+  };
 
-
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async e => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     const res = await axios.get(`user/profile/${userData?.user_id}/`);
 
     const formData = new FormData();
     if (profileData.p_image && profileData.p_image !== res.data.image) {
-      formData.append('image', profileData.p_image);
+      formData.append("image", profileData.p_image);
     }
-    formData.append('full_name', profileData.full_name);
-    formData.append('about', profileData.about);
-    formData.append('country', profileData.country);
-    formData.append('city', profileData.city);
-    formData.append('state', profileData.state);
-    formData.append('address', profileData.address);
+    formData.append("full_name", profileData.full_name);
+    formData.append("about", profileData.about);
+    formData.append("country", profileData.country);
+    formData.append("city", profileData.city);
+    formData.append("state", profileData.state);
+    formData.append("address", profileData.address);
 
     try {
       await apiInstance.patch(`customer/setting/${userData?.user_id}/`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data",
         },
       });
       Toast.fire({
-        icon: 'success',
+        icon: "success",
         title: "Profile updated successfully",
-      })
-      setLoading(false)
-
+      });
+      setLoading(false);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -124,7 +120,11 @@ function Settings() {
                           {" "}
                           <i className="fas fa-gear fa-spin" /> Settings{" "}
                         </h3>
-                        <form onSubmit={handleFormSubmit} method='POST' encType="multipart/form-data">
+                        <form
+                          onSubmit={handleFormSubmit}
+                          method="POST"
+                          encType="multipart/form-data"
+                        >
                           <div className="row">
                             <div className="col-lg-12 mb-4">
                               <label
@@ -138,7 +138,7 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 onChange={handleFileChange}
-                                name='p_image'
+                                name="p_image"
                               />
                             </div>
                             <div className="col-lg-12">
@@ -154,8 +154,7 @@ function Settings() {
                                 aria-describedby="emailHelp"
                                 value={profileData?.full_name}
                                 onChange={handleInputChange}
-                                name='full_name'
-
+                                name="full_name"
                               />
                             </div>
                             <div className="col-lg-6 mt-3">
@@ -170,7 +169,7 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 value={profileData?.email}
-                                name='email'
+                                name="email"
                                 readOnly
                               />
                             </div>
@@ -186,7 +185,7 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 value={profileData?.phone}
-                                name='phone'
+                                name="phone"
                                 readOnly
                               />
                             </div>
@@ -201,13 +200,12 @@ function Settings() {
                                 Address
                               </label>
                               <input
-                                name='address'
+                                name="address"
                                 value={profileData?.address}
                                 type="text"
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 onChange={handleInputChange}
-
                               />
                             </div>
                             <div className="col-lg-6 mt-3">
@@ -222,9 +220,8 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 value={profileData?.city}
-                                name='city'
+                                name="city"
                                 onChange={handleInputChange}
-
                               />
                             </div>
                             <div className="col-lg-6 mt-3">
@@ -239,9 +236,8 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 value={profileData?.state}
-                                name='state'
+                                name="state"
                                 onChange={handleInputChange}
-
                               />
                             </div>
                             <div className="col-lg-6 mt-3">
@@ -256,23 +252,22 @@ function Settings() {
                                 className="form-control"
                                 aria-describedby="emailHelp"
                                 value={profileData?.country}
-                                name='country'
+                                name="country"
                                 onChange={handleInputChange}
-
                               />
                             </div>
                           </div>
-                          {loading === false &&
+                          {loading === false && (
                             <button type="submit" className="btn btn-primary mt-5">
                               Save Changes
                             </button>
-                          }
+                          )}
 
-                          {loading === true &&
+                          {loading === true && (
                             <button disabled className="btn btn-primary mt-5">
-                              Saving... <i className='fas fa-spinner fa-spin'></i>
+                              Saving... <i className="fas fa-spinner fa-spin"></i>
                             </button>
-                          }
+                          )}
                         </form>
                       </section>
                       {/* Section: Summary */}
@@ -288,9 +283,8 @@ function Settings() {
           {/*Section: Wishlist*/}
         </div>
       </main>
-
     </div>
-  )
+  );
 }
 
-export default Settings
+export default Settings;

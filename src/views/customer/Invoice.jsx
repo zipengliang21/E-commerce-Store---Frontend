@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
-import '../style/InvoiceStyle.css';
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import "../style/InvoiceStyle.css";
 
-import apiInstance from '../../utils/axios';
-
+import apiInstance from "../../utils/axios";
 
 function Invoice() {
-  const [order, setOrder] = useState([])
-  const [orderItems, setOrderItems] = useState([])
-  const axios = apiInstance
-  const param = useParams()
+  const [order, setOrder] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
+  const axios = apiInstance;
+  const param = useParams();
 
   useEffect(() => {
-    axios.get(`checkout/${param?.order_oid}/`).then((res) => {
+    axios.get(`checkout/${param?.order_oid}/`).then(res => {
       setOrder(res.data);
       setOrderItems(res.data.orderitem);
-    })
-  }, [param])
+    });
+  }, [param]);
 
   const handlePrint = () => {
     window.print();
@@ -72,28 +71,27 @@ function Invoice() {
                       <p>
                         <b>
                           <i className="fa fa-envelope" />
-                        </b>{order.email}
+                        </b>
+                        {order.email}
                       </p>
                       <p>
                         <b>
                           <i className="fa fa-phone" />
-                        </b>{order.mobile}
+                        </b>
+                        {order.mobile}
                       </p>
                     </div>
                   </div>
                   <br />
                   <div className="col-xs-12 col-sm-12 col-md-12">
                     <div className="receipt-left">
-                      <h6>
-                        INVOICE ID #{order.oid}
-                      </h6>
+                      <h6>INVOICE ID #{order.oid}</h6>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -107,62 +105,47 @@ function Invoice() {
                 <tbody>
                   {orderItems.map((order, index) => (
                     <tr>
-                      <td className="col-md-5">
-                        {order?.product?.title}
-                      </td>
-                      <td className="col-md-2">
-                        ${order?.price}
-                      </td>
-                      <td className="col-md-2">
-                        ${order?.qty}
-                      </td>
-                      <td className="col-md-2">
-                        ${order?.sub_total}
-                      </td>
-                      <td className="col-md-2">
-                        ${order?.saved}
-                      </td>
+                      <td className="col-md-5">{order?.product?.title}</td>
+                      <td className="col-md-2">${order?.price}</td>
+                      <td className="col-md-2">${order?.qty}</td>
+                      <td className="col-md-2">${order?.sub_total}</td>
+                      <td className="col-md-2">${order?.saved}</td>
                     </tr>
                   ))}
-
                 </tbody>
               </table>
               <div className="row">
-                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
-
-                </div>
+                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start"></div>
                 <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
                   <div className="receipt-right">
                     <h5>Summary</h5>
                     <p className="mb-2">
-                      <b>Sub Total: </b>
-                      ${order.sub_total}
+                      <b>Sub Total: </b>${order.sub_total}
                     </p>
                     <p className="mb-2">
-                      <b>Shipping: </b>
-                      ${order.shipping_amount}
+                      <b>Shipping: </b>${order.shipping_amount}
                     </p>
                     <p className="mb-2">
-                      <b>Tax: </b>
-                      ${order.tax_fee}
+                      <b>Tax: </b>${order.tax_fee}
                     </p>
                     <p className="mb-2">
-                      <b>Service Fee: </b>
-                      ${order.service_fee}
+                      <b>Service Fee: </b>${order.service_fee}
                     </p>
                     <br />
                     <p className="mb-2">
-                      <b>Total: </b>
-                      ${order.total}
+                      <b>Total: </b>${order.total}
                     </p>
-
                   </div>
                 </div>
               </div>
             </div>
             <hr />
             <div className="d-flex justify-content-center align-items-center">
-              <button onClick={handlePrint} id="printButton" className="btn btn-dark">
+              <button
+                onClick={handlePrint}
+                id="printButton"
+                className="btn btn-dark"
+              >
                 Print <i className="fas fa-print" />
               </button>
             </div>
@@ -170,9 +153,8 @@ function Invoice() {
         </div>
         {/* Print Windows */}
       </>
-
     </div>
-  )
+  );
 }
 
-export default Invoice
+export default Invoice;
