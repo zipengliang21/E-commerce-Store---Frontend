@@ -29,6 +29,7 @@ import Wishlist from "./views/customer/Wishlist";
 import Notification from "./views/customer/Notifications";
 import CustomerSettings from "./views/customer/Settings";
 import Invoice from "./views/customer/Invoice";
+import VendorDashboard from "./views/vendor/VendorDashboard";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -121,6 +122,16 @@ function App() {
               element={
                 <PrivateRoute>
                   <Invoice />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Vendor Routes */}
+            <Route
+              path="/vendor/dashboard"
+              element={
+                <PrivateRoute>
+                  <VendorDashboard />
                 </PrivateRoute>
               }
             />
