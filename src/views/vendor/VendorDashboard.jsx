@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import moment from "moment";
 import Chart from "chart.js/auto";
-import { Pie, Line } from "react-chartjs-2";
+import { Pie, Line, Bar } from "react-chartjs-2";
 
 import apiInstance from "../../utils/axios";
 import UserData from "../plugin/UserData";
@@ -71,12 +71,12 @@ function VendorDashboard() {
     const fetchChartData = async () => {
       try {
         const order_response = await axios.get(
-          `vendor-orders-report-chart/${userData?.vendor_id}/`,
+          `vendor-orders-chart/${userData?.vendor_id}/`,
         );
         setOrderChartData(order_response.data);
 
         const product_response = await axios.get(
-          `vendor-products-report-chart/${userData?.vendor_id}/`,
+          `vendor-product-chart/${userData?.vendor_id}/`,
         );
         setProductsChartData(product_response.data);
       } catch (error) {
