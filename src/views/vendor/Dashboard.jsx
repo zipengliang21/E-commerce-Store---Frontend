@@ -234,7 +234,7 @@ function VendorDashboard() {
                 <table className="table">
                   <thead className="table-dark">
                     <tr>
-                      <th scope="col">#ID</th>
+                      <th scope="col">Image</th>
                       <th scope="col">Name</th>
                       <th scope="col">Price</th>
                       <th scope="col">Quantity</th>
@@ -246,7 +246,9 @@ function VendorDashboard() {
                   <tbody>
                     {products?.map((p, index) => (
                       <tr key={index}>
-                        <th scope="row">#{p.sku}</th>
+                        <th scope="row">
+                          <img src={p.image} style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "5px" }} alt=""></img>
+                        </th>
                         <td>{p.title}</td>
                         <td>${p.price}</td>
                         <td>{p.stock_qty}</td>

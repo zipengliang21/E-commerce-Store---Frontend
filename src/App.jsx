@@ -29,7 +29,9 @@ import Wishlist from "./views/customer/Wishlist";
 import Notification from "./views/customer/Notifications";
 import CustomerSettings from "./views/customer/Settings";
 import Invoice from "./views/customer/Invoice";
-import VendorDashboard from "./views/vendor/VendorDashboard";
+import VendorDashboard from "./views/vendor/Dashboard";
+import VendorProducts from "./views/vendor/Products";
+import VendorOrders from "./views/vendor/Orders";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -132,6 +134,22 @@ function App() {
               element={
                 <PrivateRoute>
                   <VendorDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/products"
+              element={
+                <PrivateRoute>
+                  <VendorProducts />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/orders"
+              element={
+                <PrivateRoute>
+                  <VendorOrders />
                 </PrivateRoute>
               }
             />
