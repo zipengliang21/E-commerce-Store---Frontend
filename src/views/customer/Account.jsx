@@ -27,10 +27,8 @@ function Account() {
                           From your account dashboard. you can easily check &amp;
                           view your <a href="">orders</a>, manage your{" "}
                           <a href="">
-                            <shipping address="" a="">
-                              {" "}
-                            </shipping>
-                          </a>
+                            shipping address
+                          </a>{", "}
                           <a href="">change password</a> and{" "}
                           <a href="">edit account</a> infomations.
                         </div>

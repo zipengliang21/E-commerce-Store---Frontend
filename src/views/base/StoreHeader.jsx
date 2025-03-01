@@ -11,8 +11,6 @@ function StoreHeader() {
   const [isLoggedIn, user] = useAuthStore(state => [state.isLoggedIn, state.user]);
   const cartCount = useContext(CartContext)[0];
 
-  console.log("user().vendor_id", user().vendor_id);
-
   const navigate = useNavigate();
 
   const handleSearchChange = event => {
