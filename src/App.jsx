@@ -32,6 +32,7 @@ import Invoice from "./views/customer/Invoice";
 import VendorDashboard from "./views/vendor/Dashboard";
 import VendorProducts from "./views/vendor/Products";
 import VendorOrders from "./views/vendor/Orders";
+import VendorOrderDetail from "./views/vendor/OrderDetail";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -150,6 +151,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <VendorOrders />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/orders/:order_oid"
+              element={
+                <PrivateRoute>
+                  <VendorOrderDetail />
                 </PrivateRoute>
               }
             />
