@@ -36,6 +36,7 @@ import VendorOrderDetail from "./views/vendor/OrderDetail";
 import Earning from "./views/vendor/Earning";
 import Reviews from "./views/vendor/Reviews";
 import ReviewDetail from "./views/vendor/ReviewDetail";
+import Coupon from "./views/vendor/Coupon";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -186,6 +187,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <ReviewDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/coupon"
+              element={
+                <PrivateRoute>
+                  <Coupon />
                 </PrivateRoute>
               }
             />
