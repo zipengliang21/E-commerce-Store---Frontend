@@ -1,42 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 
-import apiInstance from '../../utils/axios';
-import UserData from '../plugin/UserData';
-import Sidebar from './Sidebar';
-
+import apiInstance from "../../utils/axios";
+import UserData from "../plugin/UserData";
+import Sidebar from "./Sidebar";
 
 function Earning() {
-  const [earningStats, setEarningStats] = useState(null)
-  const [earningStatsTracker, setEarningTracker] = useState([])
-  const [earningChartData, setEarningChartData] = useState(null)
+  const [earningStats, setEarningStats] = useState(null);
+  const [earningStatsTracker, setEarningTracker] = useState([]);
+  const [earningChartData, setEarningChartData] = useState(null);
 
   if (UserData()?.vendor_id === 0) {
-    window.location.href = '/vendor/register/'
+    window.location.href = "/vendor/register/";
   }
 
-  const axios = apiInstance
-  const userData = UserData()
+  const axios = apiInstance;
+  const userData = UserData();
 
   useEffect(() => {
     const fetEarningStats = async () => {
-      axios.get(`vendor-earning/${userData?.vendor_id}/`).then((res) => {
-        setEarningStats(res.data[0])
-      })
+      axios.get(`vendor-earning/${userData?.vendor_id}/`).then(res => {
+        setEarningStats(res.data[0]);
+      });
 
-      axios.get(`vendor-monthly-earning/${userData?.vendor_id}/`).then((res) => {
-        setEarningTracker(res.data)
-        setEarningChartData(res.data)
-      })
-    }
-    fetEarningStats()
-  }, [])
+      axios.get(`vendor-monthly-earning/${userData?.vendor_id}/`).then(res => {
+        setEarningTracker(res.data);
+        setEarningChartData(res.data);
+      });
+    };
+    fetEarningStats();
+  }, []);
 
   const months = earningChartData?.map(item => item.month);
   const revenue = earningChartData?.map(item => item.total_earning);
   const sales_count = earningChartData?.map(item => item.sales_count);
-
 
   const revenue_data = {
     labels: months,
@@ -46,17 +44,19 @@ function Earning() {
         data: revenue,
         fill: true,
         backgroundColor: "#cdb9ed",
-        borderColor: "#6203fc"
+        borderColor: "#6203fc",
       },
-    ]
-  }
+    ],
+  };
   return (
-    <div className="container-fluid" id="main" >
+    <div className="container-fluid" id="main">
       <div className="row row-offcanvas row-offcanvas-left h-100">
         <Sidebar />
         <div className="col-md-9 col-lg-10 main">
           <div className="mb-3 mt-3" style={{ marginBottom: 300 }}>
-            <h4><i class="fas fa-dollar-sign"></i> Earning and Revenue  </h4>
+            <h4>
+              <i class="fas fa-dollar-sign"></i> Earning and Revenue{" "}
+            </h4>
 
             <div className="col-xl-12 col-lg-12  mt-4">
               <div className="row mb-3 text-white">
@@ -67,7 +67,9 @@ function Earning() {
                         <i className="bi bi-currency-dollar fa-5x" />
                       </div>
                       <h6 className="text-uppercase">Total Sales</h6>
-                      <h1 className="display-1"><b>${earningStats?.total_revenue || "0.00"}</b></h1>
+                      <h1 className="display-1">
+                        <b>${earningStats?.total_revenue || "0.00"}</b>
+                      </h1>
                     </div>
                   </div>
                 </div>
@@ -78,7 +80,9 @@ function Earning() {
                         <i className="bi bi-currency-dollar fa-5x" />
                       </div>
                       <h6 className="text-uppercase">Monthly Earning</h6>
-                      <h1 className="display-1"><b>${earningStats?.monthly_revenue || "0.00"}</b></h1>
+                      <h1 className="display-1">
+                        <b>${earningStats?.monthly_revenue || "0.00"}</b>
+                      </h1>
                     </div>
                   </div>
                 </div>
@@ -120,7 +124,6 @@ function Earning() {
                           </td> */}
                         </tr>
                       ))}
-
                     </tbody>
                   </table>
                 </div>
@@ -134,7 +137,10 @@ function Earning() {
                     <div className="col-md-12 py-1">
                       <div className="card">
                         <div className="card-body">
-                          <Line data={revenue_data} style={{ height: 300, minWidth: "630px" }} />
+                          <Line
+                            data={revenue_data}
+                            style={{ height: 300, minWidth: "630px" }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -142,12 +148,11 @@ function Earning() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Earning
+export default Earning;

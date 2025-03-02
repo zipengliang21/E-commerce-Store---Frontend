@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
-import apiInstance from '../../utils/axios';
-import UserData from '../plugin/UserData';
-import Sidebar from './Sidebar';
-import Swal from 'sweetalert2';
+import apiInstance from "../../utils/axios";
+import UserData from "../plugin/UserData";
+import Sidebar from "./Sidebar";
+import Swal from "sweetalert2";
 
 function Coupon() {
-  const [stats, setStats] = useState([])
-  const [coupons, setCoupons] = useState([])
+  const [stats, setStats] = useState([]);
+  const [coupons, setCoupons] = useState([]);
   const [createCoupons, setCreateCoupons] = useState({
     code: "",
     discount: "",
-    active: true
-  })
+    active: true,
+  });
 
   if (UserData()?.vendor_id === 0) {
-    window.location.href = '/vendor/register/'
+    window.location.href = "/vendor/register/";
   }
 
-  const axios = apiInstance
-  const userData = UserData()
+  const axios = apiInstance;
+  const userData = UserData();
 
   const fetchData = async () => {
     try {
-      await axios.get(`vendor-coupon-list/${userData?.vendor_id}/`).then((res) => {
+      await axios.get(`vendor-coupon-list/${userData?.vendor_id}/`).then(res => {
         setCoupons(res.data);
-      })
+      });
 
-      await axios.get(`vendor-coupon-list/${userData?.vendor_id}/`).then((res) => {
+      await axios.get(`vendor-coupon-list/${userData?.vendor_id}/`).then(res => {
         setCoupons(res.data);
-      })
+      });
 
-      await axios.get(`vendor-coupon-stats/${userData?.vendor_id}/`).then((res) => {
+      await axios.get(`vendor-coupon-stats/${userData?.vendor_id}/`).then(res => {
         setStats(res.data[0]);
-      })
+      });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -44,57 +44,64 @@ function Coupon() {
     fetchData();
   }, []);
 
-  const handleDeleteCoupon = async (couponId) => {
-    await axios.delete(`vendor-coupon-detail/${userData?.vendor_id}/${couponId}`).then((res) => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Coupon Deleted!',
-      })
-      console.log(res.data);
-    })
+  const handleDeleteCoupon = async couponId => {
+    await axios
+      .delete(`vendor-coupon-detail/${userData?.vendor_id}/${couponId}`)
+      .then(res => {
+        Swal.fire({
+          icon: "success",
+          title: "Coupon Deleted!",
+        });
+        console.log(res.data);
+      });
     await fetchData();
-  }
+  };
 
-  const handleCreateCouponChange = (event) => {
+  const handleCreateCouponChange = event => {
     setCreateCoupons({
       ...createCoupons,
-      [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-    })
+      [event.target.name]:
+        event.target.type === "checkbox" ? event.target.checked : event.target.value,
+    });
     console.log(createCoupons);
-  }
+  };
 
-  const handleCreateCoupon = async (e) => {
-    e.preventDefault()
-    const formdata = new FormData()
+  const handleCreateCoupon = async e => {
+    e.preventDefault();
+    const formdata = new FormData();
 
-    formdata.append("vendor_id", userData?.vendor_id)
-    formdata.append("code", createCoupons.code)
-    formdata.append("discount", createCoupons.discount)
-    formdata.append("active", createCoupons.active)
+    formdata.append("vendor_id", userData?.vendor_id);
+    formdata.append("code", createCoupons.code);
+    formdata.append("discount", createCoupons.discount);
+    formdata.append("active", createCoupons.active);
 
-    await axios.post(`vendor-coupon-create/${userData?.vendor_id}/`, formdata).then((res) => {
-      console.log(res.data);
-      Swal.fire({
-        icon: 'success',
-        title: 'Coupon Created!',
-      })
-    })
+    await axios
+      .post(`vendor-coupon-create/${userData?.vendor_id}/`, formdata)
+      .then(res => {
+        console.log(res.data);
+        Swal.fire({
+          icon: "success",
+          title: "Coupon Created!",
+        });
+      });
     await fetchData();
-  }
+  };
 
   return (
-    <div className="container-fluid" id="main" >
+    <div className="container-fluid" id="main">
       <div className="row row-offcanvas row-offcanvas-left h-100">
         <Sidebar />
         <div className="col-md-9 col-lg-10 main mt-4">
-          <h4 className="mt-3 mb-4"><i className="bi bi-tag" /> Coupons</h4>
+          <h4 className="mt-3 mb-4">
+            <i className="bi bi-tag" /> Coupons
+          </h4>
           <button
             type="button"
             className="btn btn-primary mb-3"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            <i className='fas fa-plus'></i> Create New Coupon
+            <i className="fas fa-plus"></i> Create New Coupon
           </button>
           <div className="row mb-3">
             <div className="col-xl-6 col-lg-6 mb-2">
@@ -140,34 +147,31 @@ function Coupon() {
                       <td>Percentage</td>
                       <td>{coupon.discount}%</td>
                       <td>
-                        {coupon.active === true
-                          ? <p>Active</p>
-                          : <p>In-active</p>
-                        }
+                        {coupon.active === true ? <p>Active</p> : <p>In-active</p>}
                       </td>
                       <td>
-
-                        <Link to={`/vendor/coupon/${coupon.id}/`} className="btn btn-primary mb-1">
+                        <Link
+                          to={`/vendor/coupon/${coupon.id}/`}
+                          className="btn btn-primary mb-1"
+                        >
                           <i className="fas fa-edit" />
                         </Link>
-                        <button onClick={() => handleDeleteCoupon(coupon.id)} className="btn btn-danger mb-1 ms-2">
+                        <button
+                          onClick={() => handleDeleteCoupon(coupon.id)}
+                          className="btn btn-danger mb-1 ms-2"
+                        >
                           <i className="fas fa-trash" />
                         </button>
                       </td>
                     </tr>
                   ))}
 
-                  {coupons < 1 &&
-                    <h5 className='mt-4 p-3'>No coupons yet</h5>
-                  }
-
+                  {coupons < 1 && <h5 className="mt-4 p-3">No coupons yet</h5>}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-
-
       </div>
       <>
         {/* Button trigger modal */}
@@ -204,8 +208,8 @@ function Coupon() {
                       className="form-control"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
-                      name='code'
-                      placeholder='Enter Coupon Code'
+                      name="code"
+                      placeholder="Enter Coupon Code"
                       onChange={handleCreateCouponChange}
                       value={createCoupons.code}
                     />
@@ -221,8 +225,8 @@ function Coupon() {
                       type="number"
                       className="form-control"
                       id="exampleInputPassword1"
-                      name='discount'
-                      placeholder='Enter Discount'
+                      name="discount"
+                      placeholder="Enter Discount"
                       onChange={handleCreateCouponChange}
                       value={createCoupons.discount}
                     />
@@ -231,13 +235,20 @@ function Coupon() {
                     </div>
                   </div>
                   <div className="mb-3 form-check">
-                    <input checked={createCoupons.active} onChange={handleCreateCouponChange} name='active' type="checkbox" className="form-check-input" id="exampleCheck1" />
+                    <input
+                      checked={createCoupons.active}
+                      onChange={handleCreateCouponChange}
+                      name="active"
+                      type="checkbox"
+                      className="form-check-input"
+                      id="exampleCheck1"
+                    />
                     <label className="form-check-label" htmlFor="exampleCheck1">
                       Activate Coupon
                     </label>
                   </div>
                   <button type="submit" className="btn btn-success">
-                    Create Coupon <i className='fas fa-check-circle'></i>
+                    Create Coupon <i className="fas fa-check-circle"></i>
                   </button>
                 </form>
               </div>
@@ -245,11 +256,8 @@ function Coupon() {
           </div>
         </div>
       </>
-
-    </div >
-
-
-  )
+    </div>
+  );
 }
 
-export default Coupon
+export default Coupon;

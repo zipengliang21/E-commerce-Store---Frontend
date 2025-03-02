@@ -247,7 +247,16 @@ function VendorDashboard() {
                     {products?.map((p, index) => (
                       <tr key={index}>
                         <th scope="row">
-                          <img src={p.image} style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "5px" }} alt=""></img>
+                          <img
+                            src={p.image}
+                            style={{
+                              width: "100px",
+                              height: "70px",
+                              objectFit: "cover",
+                              borderRadius: "5px",
+                            }}
+                            alt=""
+                          ></img>
                         </th>
                         <td>{p.title}</td>
                         <td>${p.price}</td>

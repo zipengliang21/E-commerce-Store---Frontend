@@ -26,9 +26,8 @@ function Account() {
                         <div className="col-lg-12 mb-4 mb-lg-0 h-100">
                           From your account dashboard. you can easily check &amp;
                           view your <a href="">orders</a>, manage your{" "}
-                          <a href="">
-                            shipping address
-                          </a>{", "}
+                          <a href="">shipping address</a>
+                          {", "}
                           <a href="">change password</a> and{" "}
                           <a href="">edit account</a> infomations.
                         </div>
