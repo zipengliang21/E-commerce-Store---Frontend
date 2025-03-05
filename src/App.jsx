@@ -39,6 +39,7 @@ import ReviewDetail from "./views/vendor/ReviewDetail";
 import Coupon from "./views/vendor/Coupon";
 import EditCoupon from "./views/vendor/EditCoupon";
 import Notifications from "./views/vendor/Notifications";
+import Settings from "./views/vendor/Setting";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -213,6 +214,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Notifications />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/settings"
+              element={
+                <PrivateRoute>
+                  <Settings />
                 </PrivateRoute>
               }
             />
