@@ -40,6 +40,7 @@ import Coupon from "./views/vendor/Coupon";
 import EditCoupon from "./views/vendor/EditCoupon";
 import Notifications from "./views/vendor/Notifications";
 import Settings from "./views/vendor/Setting";
+import Shop from "./views/vendor/Shop";
 
 function App() {
   const [cartCount, setCartCount] = useState();
@@ -222,6 +223,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Settings />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/vendor/:slug/"
+              element={
+                <PrivateRoute>
+                  <Shop />
                 </PrivateRoute>
               }
             />
