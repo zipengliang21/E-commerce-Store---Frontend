@@ -87,9 +87,9 @@ function Sidebar() {
         </li>
         <li className="mb-3">
           <Link
-            to="/vendor/product/new/"
+            to="/vendor/add-product/"
             className={
-              isActiveLink(location.pathname, "/vendor/product/new/")
+              isActiveLink(location.pathname, "/vendor/add-product/")
                 ? "nav-link text-white active"
                 : "nav-link text-white"
             }
