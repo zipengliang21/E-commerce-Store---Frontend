@@ -131,7 +131,7 @@ function Products() {
                       className="bg-image hover-zoom ripple"
                       data-mdb-ripple-color="light"
                     >
-                      <Link to={`/detail/${p.slug}/`}>
+                      <Link to={`/detail/${p.pid}/`}>
                         <img
                           src={p.image}
                           className="w-100"
@@ -144,7 +144,7 @@ function Products() {
                       </Link>
                     </div>
                     <div className="card-body">
-                      <Link to={`/detail/${p.slug}/`} className="text-reset">
+                      <Link to={`/detail/${p.pid}/`} className="text-reset">
                         <h5 className="card-title mb-3">{p.title}</h5>
                       </Link>
                       <div className="text-reset">
