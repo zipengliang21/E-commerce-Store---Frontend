@@ -203,14 +203,13 @@ function AddProduct() {
         },
       );
 
-      navigate('/vendor/products/')
+      navigate("/vendor/products/");
 
       Swal.fire({
         icon: "success",
         title: "Product Created Successfully",
         text: "This product has been successfully created",
       });
-
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsLoading(false);
@@ -535,7 +534,7 @@ function AddProduct() {
                         <div className="card mb-3">
                           <div className="card-body">
                             {specifications.map((specification, index) => (
-                              <div className="row text-dark" key={index} >
+                              <div className="row text-dark" key={index}>
                                 <div className="col-lg-3 mb-2">
                                   <label htmlFor="" className="mb-2">
                                     Title
@@ -901,8 +900,8 @@ function AddProduct() {
             </div>
           </div>
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 
