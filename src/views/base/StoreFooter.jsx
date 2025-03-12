@@ -65,6 +65,16 @@ function StoreFooter() {
             <div className="col-lg-4 mb-4 mb-lg-0">
               <p>
                 <strong>About us</strong>
+                <ul className="list-unstyled">
+                  <li>
+                    <a
+                      href="https://www.linkedin.com/in/zipeng-liang/"
+                      className="text-dark"
+                    >
+                      Zipeng Liang
+                    </a>
+                  </li>
+                </ul>
               </p>
             </div>
             {/*Grid column*/}
@@ -84,16 +94,6 @@ function StoreFooter() {
                     Media
                   </a>
                 </li>
-                <li>
-                  <a href="#!" className="text-dark">
-                    Job offers
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="text-dark">
-                    Cooperation
-                  </a>
-                </li>
               </ul>
             </div>
             {/*Grid column*/}
@@ -105,22 +105,22 @@ function StoreFooter() {
               <ul className="list-unstyled">
                 <li>
                   <a href="#!" className="text-dark">
-                    Electronics
+                    Camera
                   </a>
                 </li>
                 <li>
                   <a href="#!" className="text-dark">
-                    Fashion
+                    Kitchenware
                   </a>
                 </li>
                 <li>
                   <a href="#!" className="text-dark">
-                    Beauty
+                    Clothing
                   </a>
                 </li>
                 <li>
                   <a href="#!" className="text-dark">
-                    Automotive
+                    Computer
                   </a>
                 </li>
               </ul>
@@ -164,9 +164,9 @@ function StoreFooter() {
           className="text-center p-3"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
         >
-          © 2025 Copyright:
-          <a className="text-dark" href="https://mdbootstrap.com/">
-            MDBootstrap.com
+          © 2025 Copyright:&nbsp;&nbsp;
+          <a className="text-dark" href="https://www.linkedin.com/in/zipeng-liang/">
+            Zipeng Liang
           </a>
         </div>
         {/* Copyright */}
