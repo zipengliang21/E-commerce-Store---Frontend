@@ -5,6 +5,7 @@ import GetCurrentAddress from "../plugin/UserCountry";
 import UserData from "../plugin/UserData";
 import CardID from "../plugin/CardID";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../plugin/Context";
 import { AddToWishlist } from "../plugin/AddToWishlist";
 
@@ -30,6 +31,8 @@ function Products() {
   const currentAddress = GetCurrentAddress();
   const userData = UserData();
   const cartID = CardID();
+
+  const navigate = useNavigate();
 
   const handleColorButtonClick = (e, productId, colorName) => {
     setSelectedColors(prevSelectedColors => ({
@@ -131,7 +134,12 @@ function Products() {
               )}
               <div className="row">
                 {category?.map((c, index) => (
-                  <div className="col-lg-2" key={index}>
+                  <div
+                    className="col-lg-2"
+                    key={index}
+                    onClick={() => navigate(`/search?query=${c.title}`)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <img
                       src={c.image}
                       style={{
@@ -140,7 +148,7 @@ function Products() {
                         borderRadius: "50%",
                         objectFit: "cover",
                       }}
-                      alt=""
+                      alt={c.title}
                     />
                     <h6>{c.title}</h6>
                   </div>

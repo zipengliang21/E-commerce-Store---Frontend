@@ -176,23 +176,17 @@ function Search() {
                           </Link>
                         </div>
                         <div className="card-body">
-                          <h6 className="">
-                            By:{" "}
-                            <Link to={`/vendor/${product?.vendor?.slug}`}>
-                              {product.vendor.name}
-                            </Link>
-                          </h6>
-                          <Link
-                            to={`/detail/${product.slug}`}
-                            className="text-reset"
-                          >
+                          <h6 className="">By: {product?.vendor?.name}</h6>
+                          <Link to={`/detail/${product.pid}`} className="text-reset">
                             <h5 className="card-title mb-3 ">
-                              {product.title.slice(0, 30)}...
+                              {product.title.length > 25
+                                ? `${product.title.slice(0, 25)}...`
+                                : product.title}
                             </h5>
                           </Link>
-                          <Link to="/" className="text-reset">
-                            <p>{product?.brand.title}</p>
-                          </Link>
+                          <div className="text-reset">
+                            <p>{product?.category?.title}</p>
+                          </div>
                           <h6 className="mb-1">${product.price}</h6>
 
                           {(product.color && product.color.length > 0) ||
