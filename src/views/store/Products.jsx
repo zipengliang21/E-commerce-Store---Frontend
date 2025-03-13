@@ -120,9 +120,29 @@ function Products() {
 
   return (
     <>
-      <main className="mt-5">
+      <main className="mt-4">
         <div className="container">
           <div className="text-center">
+            <div>
+              <h4 className="d-flex px-3 mb-3">Category</h4>
+              <div className="row">
+                {category?.map((c, index) => (
+                  <div className="col-lg-2" key={index}>
+                    <img
+                      src={c.image}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                      alt=""
+                    />
+                    <h6>{c.title}</h6>
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="row">
               {products?.map((p, index) => (
                 <div className="col-lg-4 col-md-12 mb-4" key={index}>
@@ -261,23 +281,6 @@ function Products() {
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="row">
-              {category?.map((c, index) => (
-                <div className="col-lg-2" key={index}>
-                  <img
-                    src={c.image}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                    }}
-                    alt=""
-                  />
-                  <h6>{c.title}</h6>
                 </div>
               ))}
             </div>
