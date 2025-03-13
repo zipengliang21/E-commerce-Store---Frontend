@@ -65,17 +65,17 @@ function StoreFooter() {
             <div className="col-lg-4 mb-4 mb-lg-0">
               <p>
                 <strong>About us</strong>
-                <ul className="list-unstyled">
-                  <li>
-                    <a
-                      href="https://www.linkedin.com/in/zipeng-liang/"
-                      className="text-dark"
-                    >
-                      Zipeng Liang
-                    </a>
-                  </li>
-                </ul>
               </p>
+              <ul className="list-unstyled">
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/zipeng-liang/"
+                    className="text-dark"
+                  >
+                    Zipeng Liang
+                  </a>
+                </li>
+              </ul>
             </div>
             {/*Grid column*/}
             {/*Grid column*/}

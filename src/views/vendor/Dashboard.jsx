@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import moment from "moment";
-import Chart from "chart.js/auto";
 import { Pie, Line, Bar } from "react-chartjs-2";
 
 import apiInstance from "../../utils/axios";

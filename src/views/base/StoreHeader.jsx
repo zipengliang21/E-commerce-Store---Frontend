@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import apiInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../plugin/Context";
+import UserData from "../plugin/UserData";
 
 function StoreHeader() {
+  const userData = UserData();
+
   const [search, setSearch] = useState("");
 
   const [isLoggedIn, user] = useAuthStore(state => [state.isLoggedIn, state.user]);
@@ -97,74 +100,76 @@ function StoreHeader() {
                 </ul>
               </li>
 
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Vendor
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/dashboard/">
-                      {" "}
-                      <i className="fas fa-user"></i> Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/products/">
-                      {" "}
-                      <i className="bi bi-grid-fill"></i> Products
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/product/new/">
-                      {" "}
-                      <i className="fas fa-plus-circle"></i> Add Products
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/orders/">
-                      {" "}
-                      <i className="fas fa-shopping-cart"></i> Orders
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/earning/">
-                      {" "}
-                      <i className="fas fa-dollar-sign"></i> Earning
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/reviews/">
-                      {" "}
-                      <i className="fas fa-star"></i> Reviews
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/coupon/">
-                      {" "}
-                      <i className="fas fa-tag"></i> Coupon
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/notifications/">
-                      {" "}
-                      <i className="fas fa-bell fa-shake"></i> Notifications
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/vendor/settings/">
-                      {" "}
-                      <i className="fas fa-gear fa-spin"></i> Settings
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+              {!userData || userData.vendor_id === 0 ? null : (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Vendor
+                  </a>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/dashboard/">
+                        {" "}
+                        <i className="fas fa-user"></i> Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/products/">
+                        {" "}
+                        <i className="bi bi-grid-fill"></i> Products
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/product/new/">
+                        {" "}
+                        <i className="fas fa-plus-circle"></i> Add Products
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/orders/">
+                        {" "}
+                        <i className="fas fa-shopping-cart"></i> Orders
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/earning/">
+                        {" "}
+                        <i className="fas fa-dollar-sign"></i> Earning
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/reviews/">
+                        {" "}
+                        <i className="fas fa-star"></i> Reviews
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/coupon/">
+                        {" "}
+                        <i className="fas fa-tag"></i> Coupon
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/notifications/">
+                        {" "}
+                        <i className="fas fa-bell fa-shake"></i> Notifications
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/vendor/settings/">
+                        {" "}
+                        <i className="fas fa-gear fa-spin"></i> Settings
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              )}
             </ul>
             <div className="d-flex">
               <input
