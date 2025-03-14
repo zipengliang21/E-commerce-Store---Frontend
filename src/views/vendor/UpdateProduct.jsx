@@ -281,7 +281,6 @@ function UpdateProduct() {
                                 />
                               )}
 
-
                               <div className="mt-3">
                                 {product.title !== "" && (
                                   <h4 className="text-dark">{product.title}</h4>
@@ -319,7 +318,9 @@ function UpdateProduct() {
                                   className="form-control"
                                   name="image"
                                   id=""
-                                  onChange={handleProductFileChange || product.image.preview}
+                                  onChange={
+                                    handleProductFileChange || product.image.preview
+                                  }
                                 />
                               </div>
                               <div className="col-lg-12 mb-2 ">

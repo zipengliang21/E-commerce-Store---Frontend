@@ -25,7 +25,7 @@ function ProductDetail() {
   const [gallery, setGallery] = useState([]);
   const [colors, setColors] = useState([]);
   const [size, setSize] = useState([]);
-  const [vendor, setVendor] = useState([])
+  const [vendor, setVendor] = useState([]);
 
   const [colorValue, setColorValue] = useState("No Color");
   const [sizeValue, setSizeValue] = useState("No Size");
@@ -117,9 +117,9 @@ function ProductDetail() {
 
   const handleAddToWishlist = () => {
     if (userData) {
-      AddToWishlist(product.id, userData?.user_id)
+      AddToWishlist(product.id, userData?.user_id);
     }
-  }
+  };
 
   const handleReviewChange = event => {
     setCreateReview({
@@ -219,59 +219,95 @@ function ProductDetail() {
                 <h1 className="fw-bold mb-3">{product.title}</h1>
                 <div className="d-flex text-primary just align-items-center">
                   <ul className="mb-3 d-flex p-0" style={{ listStyle: "none" }}>
-                    {product.product_rating === null &&
-                      <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                    }
-                    {product.product_rating > 1 && product.product_rating < 2 &&
-                      <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                    }
-                    {product.product_rating > 2 && product.product_rating < 3 &&
+                    {product.product_rating === null && (
+                      <li>
+                        <i className="fas fa-star fa-sm text-warning ps-0" />
+                      </li>
+                    )}
+                    {product.product_rating > 1 && product.product_rating < 2 && (
+                      <li>
+                        <i className="fas fa-star fa-sm text-warning ps-0" />
+                      </li>
+                    )}
+                    {product.product_rating > 2 && product.product_rating < 3 && (
                       <>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
                       </>
-                    }
+                    )}
 
-                    {product.product_rating > 3 && product.product_rating < 4 &&
+                    {product.product_rating > 3 && product.product_rating < 4 && (
                       <>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
                       </>
-                    }
+                    )}
 
-                    {product.product_rating > 4 && product.product_rating < 5 &&
+                    {product.product_rating > 4 && product.product_rating < 5 && (
                       <>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
                       </>
-                    }
+                    )}
 
-                    {product.product_rating > 5 && product.product_rating < 6 &&
+                    {product.product_rating > 5 && product.product_rating < 6 && (
                       <>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
-                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
+                        <li>
+                          <i className="fas fa-star fa-sm text-warning ps-0" />
+                        </li>
                       </>
-                    }
+                    )}
 
                     <li style={{ marginLeft: 10, fontSize: 13 }}>
                       <a href="" className="text-decoration-none align-middle">
-                        {product.product_rating !== null &&
+                        {product.product_rating !== null && (
                           <>
-                            <strong className="me-2 text-dark">{product?.product_rating?.toFixed(1)}/5.0</strong>({product?.rating_count} reviews)
+                            <strong className="me-2 text-dark">
+                              {product?.product_rating?.toFixed(1)}/5.0
+                            </strong>
+                            ({product?.rating_count} reviews)
                           </>
-                        }
+                        )}
 
-                        {product.product_rating === null &&
+                        {product.product_rating === null && (
                           <>
-                            <strong className="me-2 text-dark">Not Rated Yet</strong>(0 reviews)
+                            <strong className="me-2 text-dark">Not Rated Yet</strong>
+                            (0 reviews)
                           </>
-                        }
+                        )}
                       </a>
                     </li>
                   </ul>
