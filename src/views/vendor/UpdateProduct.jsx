@@ -12,6 +12,7 @@ function UpdateProduct() {
   const param = useParams();
 
   const [product, setProduct] = useState([]);
+  const [productCategory, setProductCategory] = useState({});
   const [specifications, setSpecifications] = useState([{ title: "", content: "" }]);
   const [colors, setColors] = useState([{ name: "", color_code: "", image: null }]);
   const [sizes, setSizes] = useState([{ name: "", price: 0.0 }]);
@@ -24,11 +25,6 @@ function UpdateProduct() {
   }
 
   const navigate = useNavigate();
-
-  // console.log("specifications: ", specifications)
-  // console.log("colors: ", colors)
-  // console.log("sizes: ", sizes)
-  // console.log("gallery: ", gallery)
 
   const handleAddMore = setStateFunction => {
     setStateFunction(prevState => [...prevState, {}]);
@@ -127,10 +123,12 @@ function UpdateProduct() {
         .get(`vendor-product-edit/${userData?.vendor_id}/${param.pid}/`)
         .then(res => {
           setProduct(res.data);
+          setProductCategory(res.data.category);
           setColors(res.data.color);
           setSizes(res.data.size);
           setSpecifications(res.data.specification);
           setGallery(res.data.gallery);
+          console.log(res.data.gallery);
         });
     };
     fetchProductItems();
@@ -259,9 +257,9 @@ function UpdateProduct() {
                         <div className="card h-100">
                           <div className="card-body">
                             <div className="d-flex flex-column align-items-center text-center">
-                              {product.image && product.image.preview ? (
+                              {product.image instanceof File ? (
                                 <img
-                                  src={product.image.preview}
+                                  src={URL.createObjectURL(product.image)}
                                   alt="Product Thumbnail Preview"
                                   style={{
                                     width: "100%",
@@ -272,16 +270,17 @@ function UpdateProduct() {
                                 />
                               ) : (
                                 <img
-                                  src={product.image}
+                                  src={product.image || "your-default-image-url.jpg"}
                                   style={{
                                     width: "100%",
                                     height: "200px",
                                     objectFit: "cover",
                                     borderRadius: 10,
                                   }}
-                                  alt=""
+                                  alt="Default Product Thumbnail"
                                 />
                               )}
+
 
                               <div className="mt-3">
                                 {product.title !== "" && (
@@ -294,7 +293,7 @@ function UpdateProduct() {
                             </div>
                             <div className="d-flex justify-content-center mt-4">
                               <Link
-                                to={`/detail/${product.slug}/`}
+                                to={`/detail/${product.pid}/`}
                                 className="btn btn-success mt-4"
                               >
                                 <i className="fas fa-eye"></i>
@@ -320,7 +319,7 @@ function UpdateProduct() {
                                   className="form-control"
                                   name="image"
                                   id=""
-                                  onChange={handleProductFileChange || product.image}
+                                  onChange={handleProductFileChange || product.image.preview}
                                 />
                               </div>
                               <div className="col-lg-12 mb-2 ">
@@ -359,7 +358,7 @@ function UpdateProduct() {
                                   className="select form-control"
                                   id=""
                                   name="category"
-                                  value={product.category || ""}
+                                  value={productCategory.id || ""}
                                   onChange={handleProductInputChange}
                                 >
                                   <option value="">- Select -</option>
@@ -884,7 +883,7 @@ function UpdateProduct() {
                     </ul>
                     <div className="d-flex justify-content-center mb-5">
                       <button type="submit" className="btn btn-success w-50">
-                        Create Product <i className="fa fa-check-circle" />{" "}
+                        Update Product <i className="fa fa-check-circle" />{" "}
                       </button>
                     </div>
                   </div>

@@ -6,6 +6,8 @@ import GetCurrentAddress from "../plugin/UserCountry";
 import UserData from "../plugin/UserData";
 import CardID from "../plugin/CardID";
 import moment from "moment";
+
+import { AddToWishlist } from "../plugin/AddToWishlist";
 import { CartContext } from "../plugin/Context";
 import Swal from "sweetalert2";
 
@@ -23,6 +25,7 @@ function ProductDetail() {
   const [gallery, setGallery] = useState([]);
   const [colors, setColors] = useState([]);
   const [size, setSize] = useState([]);
+  const [vendor, setVendor] = useState([])
 
   const [colorValue, setColorValue] = useState("No Color");
   const [sizeValue, setSizeValue] = useState("No Size");
@@ -44,8 +47,6 @@ function ProductDetail() {
 
   const cardId = CardID();
 
-  console.log(cardId);
-
   useEffect(() => {
     const fetchProductDetail = async () => {
       try {
@@ -55,6 +56,7 @@ function ProductDetail() {
         setGallery(response.data.gallery);
         setColors(response.data.color);
         setSize(response.data.size);
+        setVendor(response.data.vendor);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -113,12 +115,17 @@ function ProductDetail() {
     }
   };
 
+  const handleAddToWishlist = () => {
+    if (userData) {
+      AddToWishlist(product.id, userData?.user_id)
+    }
+  }
+
   const handleReviewChange = event => {
     setCreateReview({
       ...createReview,
       [event.target.name]: event.target.value,
     });
-    console.log(createReview);
   };
 
   const fetchReviewData = async () => {
@@ -137,6 +144,14 @@ function ProductDetail() {
     e.preventDefault();
 
     const formdata = new FormData();
+
+    if (!userData && !userData?.user_id) {
+      Swal.fire({
+        icon: "error",
+        title: "Please login to create a review",
+      });
+      return;
+    }
 
     formdata.append("user_id", userData?.user_id);
     formdata.append("product_id", product?.id);
@@ -172,7 +187,7 @@ function ProductDetail() {
                           objectFit: "cover",
                           borderRadius: 10,
                         }}
-                        alt="Gallery image 1"
+                        alt="Gallery image"
                         className="ecommerce-gallery-main-img active w-100 rounded-4"
                       />
                     </div>
@@ -204,32 +219,59 @@ function ProductDetail() {
                 <h1 className="fw-bold mb-3">{product.title}</h1>
                 <div className="d-flex text-primary just align-items-center">
                   <ul className="mb-3 d-flex p-0" style={{ listStyle: "none" }}>
-                    <li>
-                      <i
-                        className="fas fa-star fa-sm text-warning ps-0"
-                        title="Bad"
-                      />
-                      <i
-                        className="fas fa-star fa-sm text-warning ps-0"
-                        title="Bad"
-                      />
-                      <i
-                        className="fas fa-star fa-sm text-warning ps-0"
-                        title="Bad"
-                      />
-                      <i
-                        className="fas fa-star fa-sm text-warning ps-0"
-                        title="Bad"
-                      />
-                      <i
-                        className="fas fa-star fa-sm text-warning ps-0"
-                        title="Bad"
-                      />
-                    </li>
+                    {product.product_rating === null &&
+                      <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                    }
+                    {product.product_rating > 1 && product.product_rating < 2 &&
+                      <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                    }
+                    {product.product_rating > 2 && product.product_rating < 3 &&
+                      <>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                      </>
+                    }
+
+                    {product.product_rating > 3 && product.product_rating < 4 &&
+                      <>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                      </>
+                    }
+
+                    {product.product_rating > 4 && product.product_rating < 5 &&
+                      <>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                      </>
+                    }
+
+                    {product.product_rating > 5 && product.product_rating < 6 &&
+                      <>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                        <li><i className="fas fa-star fa-sm text-warning ps-0" /></li>
+                      </>
+                    }
 
                     <li style={{ marginLeft: 10, fontSize: 13 }}>
-                      <a href="" className="text-decoration-none">
-                        <strong className="me-2">4/5</strong>(2 reviews)
+                      <a href="" className="text-decoration-none align-middle">
+                        {product.product_rating !== null &&
+                          <>
+                            <strong className="me-2 text-dark">{product?.product_rating?.toFixed(1)}/5.0</strong>({product?.rating_count} reviews)
+                          </>
+                        }
+
+                        {product.product_rating === null &&
+                          <>
+                            <strong className="me-2 text-dark">Not Rated Yet</strong>(0 reviews)
+                          </>
+                        }
                       </a>
                     </li>
                   </ul>
@@ -352,8 +394,8 @@ function ProductDetail() {
                     <i className="fas fa-cart-plus me-2" /> Add to cart
                   </button>
                   <button
-                    href="#!"
                     type="button"
+                    onClick={handleAddToWishlist}
                     className="btn btn-danger btn-floating"
                     data-mdb-toggle="tooltip"
                     title="Add to wishlist"
@@ -444,20 +486,16 @@ function ProductDetail() {
               <div className="row g-0">
                 <div className="col-md-4">
                   <img
-                    src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
+                    src={vendor?.image}
+                    style={{ height: "100%", width: "100%", objectFit: "cover" }}
                     alt="User Image"
                     className="img-fluid"
                   />
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title">John Doe</h5>
-                    <p className="card-text">Frontend Developer</p>
+                    <h5 className="card-title">{vendor?.name}</h5>
+                    <p className="card-text">{vendor?.description}</p>
                   </div>
                 </div>
               </div>
