@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../plugin/Context";
 import { AddToWishlist } from "../plugin/AddToWishlist";
+import "../style/LoadingSpinner.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -20,6 +21,8 @@ const Toast = Swal.mixin({
 function Products() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const [qtyValue, setQtyValue] = useState(1);
 
@@ -56,32 +59,12 @@ function Products() {
   console.log(selectedSize);
 
   useEffect(() => {
-    const fetchProducts = () => {
-      apiInstance
-        .get("products/")
-        .then(response => {
-          setProducts(response.data);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error("Error fetching products:", error);
-        });
-    };
-
-    const fetchCategory = () => {
-      apiInstance
-        .get("category/")
-        .then(response => {
-          setCategory(response.data);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error("Error fetching category:", error);
-        });
-    };
-
-    fetchProducts();
-    fetchCategory();
+    Promise.all([
+      apiInstance.get("products/").then(response => setProducts(response.data)),
+      apiInstance.get("category/").then(response => setCategory(response.data)),
+    ])
+      .catch(error => console.error("Error fetching data:", error))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleAddToCart = async (productId, price, shippingAmount) => {
@@ -120,6 +103,15 @@ function Products() {
       console.log(error);
     }
   };
+
+  if (loading || products.length === 0 || category.length === 0) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <>
