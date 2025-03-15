@@ -24,7 +24,7 @@ function Products() {
 
   const [loading, setLoading] = useState(true);
 
-  const [qtyValue, setQtyValue] = useState(1);
+  const [qtyValues, setQtyValues] = useState({});
 
   const [selectedColors, setSelectedColors] = useState({});
   const [selectedSize, setSelectedSize] = useState({});
@@ -52,11 +52,11 @@ function Products() {
   };
 
   const handleQtyChange = (event, productId) => {
-    setQtyValue(event.target.value);
+    setQtyValues(prevQtyValues => ({
+      ...prevQtyValues,
+      [productId]: event.target.value,
+    }));
   };
-
-  console.log(selectedColors);
-  console.log(selectedSize);
 
   useEffect(() => {
     Promise.all([
@@ -72,7 +72,7 @@ function Products() {
 
     formData.append("product_id", productId);
     formData.append("user_id", userData?.user_id);
-    formData.append("qty", qtyValue);
+    formData.append("qty", qtyValues[productId]);
     formData.append("price", price);
     formData.append("shipping_amount", shippingAmount);
     formData.append("country", currentAddress.country);
@@ -80,20 +80,29 @@ function Products() {
     formData.append("color", selectedColors[productId]);
     formData.append("cart_id", cartID);
 
-    let response = await apiInstance.post(`cart-view/`, formData);
-    console.log(response.data);
+    try {
+      let response = await apiInstance.post(`cart-view`, formData);
+      console.log(response.data);
 
-    Toast.fire({
-      icon: "success",
-      title: response.data.message,
-    });
+      Toast.fire({
+        icon: "success",
+        title: response.data.message,
+      });
 
-    const url = userData?.user_id
-      ? `cart-list/${cartID}/${userData?.user_id}/`
-      : `cart-list/${cartID}/`;
-    response = await apiInstance.get(url);
+      const url = userData.user_id
+        ? `cart-list/${cartID}/${userData.user_id}/`
+        : `cart-list/${cartID}/`;
 
-    setCartCount(response.data.length);
+      response = await apiInstance.get(url);
+      setCartCount(response.data.length);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Missing Required Fields",
+        text: "Please select all required fields before adding to the cart.",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   const handleAddToWishlist = async product_id => {
@@ -214,9 +223,10 @@ function Products() {
                                 <li>
                                   <input
                                     className="form-control"
-                                    value={qtyValue}
+                                    value={qtyValues[p.id] || 1}
                                     onChange={e => handleQtyChange(e, p.id)}
                                     type="number"
+                                    min="1"
                                   />
                                 </li>
                               </div>
