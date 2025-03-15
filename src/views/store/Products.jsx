@@ -96,12 +96,31 @@ function Products() {
       response = await apiInstance.get(url);
       setCartCount(response.data.length);
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Missing Required Fields",
-        text: "Please select all required fields before adding to the cart.",
-        confirmButtonColor: "#d33",
-      });
+      if (error.response) {
+        const status = error.response.status;
+        let errorMessage = "Something went wrong. Please try again.";
+
+        if (status === 400) {
+          errorMessage =
+            "Please select all required fields before adding to the cart.";
+        } else if (status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: status === 400 ? "Missing Required Fields" : "Server Error",
+          text: errorMessage,
+          confirmButtonColor: "#d33",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Network Error",
+          text: "Unable to connect to the server. Please check your internet connection.",
+          confirmButtonColor: "#d33",
+        });
+      }
     }
   };
 
@@ -184,11 +203,11 @@ function Products() {
                       </div>
                       <div className="card-body">
                         <Link to={`/detail/${p.pid}/`} className="text-reset">
-                          <h5 className="card-title mb-3">
+                          <h6 className="card-title mb-3">
                             {p.title.length > 25
                               ? `${p.title.slice(0, 25)}...`
                               : p.title}
-                          </h5>
+                          </h6>
                         </Link>
                         <div className="text-reset">
                           <p>{p.category?.title}</p>

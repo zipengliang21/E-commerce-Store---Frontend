@@ -277,13 +277,13 @@ function Cart() {
                             >
                               {c?.product?.title.slice(0, 20)}...
                             </Link>
-                            {c.size != "No Size" && (
+                            {c.size && (
                               <p className="mb-0">
                                 <span className="text-muted me-2">Size:</span>
                                 <span>{c.size}</span>
                               </p>
                             )}
-                            {c.color != "No Color" && (
+                            {c.color && (
                               <p className="mb-0">
                                 <span className="text-muted me-2">Color:</span>
                                 <span>{c.color}</span>
